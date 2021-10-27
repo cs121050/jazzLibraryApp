@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+
+
+
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/tranparency">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="700dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/byInstrumentTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="Instruments"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/instrumentChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="108dp"
+                    app:singleSelection="true">
+
+                </com.google.android.material.chip.ChipGroup>
+
+
+                <LinearLayout
+                    android:id="@+id/ArtistCategoryLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/byArtistTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/seagram"
+                        android:text="Artists"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/artistCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/seagram"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="155dp">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/artistChipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:singleSelection="true"></com.google.android.material.chip.ChipGroup>
+
+                </androidx.core.widget.NestedScrollView>
+
+
+                <LinearLayout
+                    android:id="@+id/typeCategoryLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/byTypeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/seagram"
+                        android:text="Types"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/typeChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    app:singleSelection="true">
+
+                </com.google.android.material.chip.ChipGroup>
+
+
+                <TextView
+                    android:id="@+id/byDurationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/seagram"
+                    android:text="Durations"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/durationChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:singleSelection="true">
+
+                </com.google.android.material.chip.ChipGroup>
+
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/divider_icon" />
+
+
+                <TextView
+                    android:id="@+id/setings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="Settings"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/settingsFilterLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/advancedFiltering"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oldnewspapertypes"
+                        android:text="Simplify Filtering"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="13dp" />
+
+
+                    <Switch
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/settingsLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/backgroudColorLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/oldnewspapertypes"
+                        android:text="Disable Moving Background"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="13dp" />
+
+
+                    <Switch
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:scrollbarSize="4dp"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+                <TextView
+                    android:id="@+id/musicResorces"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="Music Resorces"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="45dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/discoverMusic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/oldnewspapertypes"
+                        android:text="       Discover Music "
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="15dp" />
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <LinearLayout
+                        android:id="@+id/DiscoverMusicLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="15dp"
+                            app:srcCompat="@drawable/divider_icon2"
+                            />
+
+
+
+                        <TextView
+                            android:id="@+id/spotifyChanel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/spotifyChanelHyperlink"
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="10dp" />
+
+
+                        <TextView
+                            android:id="@+id/sonemicChanel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/sonemicChanelHyperlink"
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="10dp" />
+
+
+                        <TextView
+                            android:id="@+id/WBGORadio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="@string/WBGORadioHyperlink"
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="10dp" />
+
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                </LinearLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="45dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/readables"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/oldnewspapertypes"
+                        android:text="           Readables "
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="15dp" />
+
+
+                    <androidx.core.widget.NestedScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp">
+
+                        <LinearLayout
+                            android:id="@+id/readablesLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="15dp"
+                                app:srcCompat="@drawable/divider_icon2"
+                                />
+
+
+
+                            <TextView
+                                android:id="@+id/goodReadsChanel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/goodReadsChanelHyperlink"
+                                android:textColor="@android:color/holo_orange_dark"
+                                android:textSize="10dp" />
+
+
+                            <TextView
+                                android:id="@+id/IMPLS"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/IMPLSHyperlink"
+                                android:textColor="@android:color/holo_orange_dark"
+                                android:textSize="10dp" />
+
+
+                        </LinearLayout>
+                    </androidx.core.widget.NestedScrollView>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <TextView
+                    android:id="@+id/appInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="App Info"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/oldnewspapertypes"
+                    android:text="@string/appInfoText"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="13dp" />
+
+
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginEnd="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/appInfoLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/appVersionLinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/appVersion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/oldnewspapertypes"
+                                android:text="appVersion:: "
+                                android:textColor="@android:color/darker_gray"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/versionNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/oldnewspapertypes"
+                                android:text="  alpha2110    "
+                                android:textColor="@android:color/holo_orange_dark"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="15dp"
+                            app:srcCompat="@drawable/divider_icon2" />
+
+
+                        <TextView
+                            android:id="@+id/warningMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Warning::  videos may removed unexpectably due to copyright charges, so.. we advise you to take notes"
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="10dp" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Warning::  that is to update from spesific database Table "
+                            android:textColor="@android:color/holo_orange_dark"
+                            android:textSize="10dp" />
+
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+
+                <TextView
+                    android:id="@+id/relatedApps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="Related Apps"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+
+                <LinearLayout
+                    android:id="@+id/relatedAppsLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+
+                    <ImageView
+                        android:id="@+id/iRealProAppIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/irealpro_icon" />
+
+                    <ImageView
+                        android:id="@+id/spotifyAppIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/spotify_icon" />
+
+                    <ImageView
+                        android:id="@+id/VLCAppIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/vlc_icon" />
+
+                    <ImageView
+                        android:id="@+id/sonemicAppIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/sonemic_icon" />
+
+                    <ImageView
+                        android:id="@+id/WBGOAppIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/wbgo_icon" />
+
+                    <ImageView
+                        android:id="@+id/IMSLPIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/imslp_icon" />
+
+                    <ImageView
+                        android:id="@+id/soundbrennerIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        app:srcCompat="@drawable/soundbrenner_icon" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/contactUs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/seagram"
+                    android:text="Contact Us"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="20dp" />
+
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>
