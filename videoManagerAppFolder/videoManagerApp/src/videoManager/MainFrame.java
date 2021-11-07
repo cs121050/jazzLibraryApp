@@ -78,8 +78,8 @@ public class MainFrame extends JFrame {
         
         spacing_Jl=new JLabel("~#    %    #~");
         
-        artistName_Tf = new JTextField("artist name");  artistName_Tf.setMinimumSize(new java.awt.Dimension(10,10));
-        videoLink_Tf= new JTextField("video link"); new Dimension(txtMessage.getWidth(), height)
+        artistName_Tf = new JTextField("artist name"); 
+        videoLink_Tf= new JTextField("video link");
         extraArtist_Tf= new JTextField("extra artist"); 
         
         instrument_Cb = new JComboBox(instruments_StringArray); 
