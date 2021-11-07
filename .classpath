@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="121050_telikh_ergasia/src/main/java"/>
+	<classpathentry kind="src" path="DBPopulator/src"/>
+	<classpathentry kind="src" path="drawer13/app/build/generated/source/buildConfig/debug"/>
+	<classpathentry kind="src" path="drawer13/app/src/androidTest/java"/>
+	<classpathentry kind="src" path="drawer13/app/src/main/java"/>
+	<classpathentry kind="src" path="drawer13/app/src/test/java"/>
+	<classpathentry kind="src" path="TicketHandlingApplication/src"/>
+	<classpathentry kind="src" path="webSearcher2/src"/>
+	<classpathentry kind="src" path="youtubeDownloader/src/main/java"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/merged_java_res/debug/out.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_0.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_1.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_2.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_3.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_4.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/build/intermediates/project_dex_archive/debug/out/e705db8ffc256ca43423902c404d9aef7bcfe8143b58a5d4a2fab81b3528a402_5.jar"/>
+	<classpathentry kind="lib" path="drawer13/app/libs/jtds-1.3.3.jar"/>
+	<classpathentry kind="lib" path="drawer13/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="webSearcher2/dist/webSearcher2.jar"/>
+	<classpathentry kind="lib" path="youtubeDownloader/target/youtubeDownloader-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="121050_telikh_ergasia/target/classes"/>
+</classpath>

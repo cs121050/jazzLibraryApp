@@ -1,0 +1,77 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="app_name">Jazz Library</string>
+    
+    <array name="name_starting_letter">
+
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+
+    </array>
+
+    <array name="Search_Option">
+
+        <item>Search Title</item>
+        <item>Search Artist</item>
+        <item>Contains</item>
+
+    </array>
+
+
+    <array name="setings_background_color_spinner">
+
+        <item>Gradient</item>
+        <item>Broken Blues</item>
+        <item>Magenta</item>
+        <item>Orange</item>
+
+
+    </array>
+
+
+
+    <string name="spotifyChanelHyperlink">Our Spotify Chanel :: here you will find playlist, of the most beautiful songs we manage to found over the years  :: <a href="https://open.spotify.com/user/31ch5wsl5wldzlj6mvvx3jw4igpa?si=014337488f554cae">https://open.spotify.com/user/31ch5wsl5wldzlj6mvvx3jw4igpa?si=014337488f554cae</a></string>
+    <string name="sonemicChanelHyperlink">Our Sonemic Album Ratings :: here you find jazz albums you have to listen before you die, we rate only masterpiece albums (ratingsof 5 or 4.5 stars) :: <a href="https://rateyourmusic.com/~Jazz_God">https://rateyourmusic.com/~Jazz_God</a></string>
+    <string name="WBGORadioHyperlink">WBGORadio :: is maybe the best Jazz Radio out there, great to discover new music! :: <a href="https://www.wbgo.org/">https://www.wbgo.org/</a></string>
+    <string name="goodReadsChanelHyperlink">Our GoodReads Chanel :: here are the best educational books about jazz :: <a href="https://learntodroid.com">https://learntodroid.com</a></string>
+    <string name="IMPLSHyperlink">IMPLS :: at this shite you can find, public domain sheet music (you can free download them too) :: <a href="https://imslp.org/wiki/Main_Page">https://imslp.org/wiki/Main_Page</a></string>
+
+    <string name="appInfoText">\t Hello, i am the Developer of this application, i hope that serves you well.
+                               My name is Nicos Sarado, i am a Software Engineer at the day and a Jazz musician
+                               when the night falls. \n
+                               \t The goal of this Video Library, is to contain the ancient knowledge of the
+                               Jazz Masters, for you to internalise it and become their living embodiment. \n
+                               \t So learn my child\' learn every day and every waking hour, practise and try
+                               harder\' with all your will and heart and soul\' to climp towards the snowy peaks
+                                of the unspeakable truth, and when you reach there, let her blaze your heart gently,
+                               and cary this flame back to us and to the physical world. \n
+                               \t Because people\' are in need of this Music, and because Music is in need of
+                               your love today.</string>
+
+
+
+
+</resources>

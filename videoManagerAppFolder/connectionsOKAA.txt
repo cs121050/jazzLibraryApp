@@ -1,0 +1,8 @@
+usedArtistNamesFilePath#C:\Users\n.sarantopoulos\Desktop\videoManagerAppFolder\text_resorses\usedArtistNames.txt
+artistNamesFilePath#C:\Users\n.sarantopoulos\Desktop\videoManagerAppFolder\text_resorses\artistNames.txt
+videoReceiverFolderPath#C:\Users\n.sarantopoulos\Desktop\videoManagerAppFolder\videoRecivingFolder
+databaseFeederFilePath#C:\Users\n.sarantopoulos\Desktop\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
+databaseΙnitialisationFile#C:\Users\n.sarantopoulos\Desktop\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
+databaseName#jazzLibrary		
+databaseUsername#sa
+databasePassword#admin
