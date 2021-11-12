@@ -1,0 +1,6 @@
+lecture
+lesson
+interview
+about
+talk
+movie

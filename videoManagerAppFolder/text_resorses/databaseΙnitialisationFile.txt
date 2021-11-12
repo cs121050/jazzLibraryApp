@@ -1,0 +1,111 @@
+
+
+?FCxr!nSS@3TJ&K0OiH!
+
+
+?fCxr!nSS@3Tj&KoOiH!
+
+oQ8uUc0jo
+
+0pinJ&o)(A
+
+CREATE TABLE Instrument (
+    instrument_id int IDENTITY(1,1) PRIMARY KEY,              
+    instrument_name varchar(255) NOT NULL
+);
+
+CREATE TABLE Artist (
+    artist_id int IDENTITY(1,1) PRIMARY KEY,                           
+    artist_name varchar(255) NOT NULL,
+    artist_surname varchar(255) NOT NULL,    
+    instrument_id int NOT NULL ,
+
+    CONSTRAINT fk_instrument_id 
+        FOREIGN KEY (instrument_id ) REFERENCES Instrument(instrument_id ) 
+); 
+
+CREATE TABLE type (
+    type_id int IDENTITY(1,1) PRIMARY KEY,                     
+    type_name varchar(255) NOT NULL
+);
+
+
+CREATE TABLE Duration(
+    duration_id int IDENTITY(1,1) PRIMARY KEY,                      
+    duration_name varchar(255) NOT NULL
+);
+
+
+CREATE TABLE Video (
+    video_id int IDENTITY(1,1) PRIMARY KEY,            
+    
+    video_name varchar(255) NOT NULL ,
+    video_duration varchar(255) NOT NULL ,
+    duration_id int  ,   
+    video_path varchar(255) NOT NULL ,
+    type_id int  ,
+    location_id varchar(255) NOT NULL ,
+
+    CONSTRAINT fk_duration_id
+        FOREIGN KEY (duration_id) REFERENCES Duration (duration_id),
+    CONSTRAINT fk_type_id
+        FOREIGN KEY (type_id) REFERENCES Type(type_id)
+);
+
+
+
+CREATE TABLE VideoContainsArtist (
+    video_id int    NOT NULL,
+    artist_id int      NOT NULL,                   
+    
+    PRIMARY KEY (video_id,artist_id),
+
+    CONSTRAINT fk_video_id2
+        FOREIGN KEY (video_id) REFERENCES Video (video_id),
+    CONSTRAINT fk_Instrument_Id2
+        FOREIGN KEY (artist_id) REFERENCES Artist (artist_id)
+);
+
+
+CREATE TABLE SplashScreenQuotes (
+    quote_id int IDENTITY(1,1) PRIMARY KEY,
+    quote_text varchar(5000)  NOT NULL
+);
+
+
+
+
+INSERT INTO instrument (instrument_name) VALUES ('bass');
+INSERT INTO instrument (instrument_name) VALUES ('guitar');
+INSERT INTO instrument (instrument_name) VALUES ('piano');
+INSERT INTO instrument (instrument_name) VALUES ('drums');
+INSERT INTO instrument (instrument_name) VALUES ('voice');
+INSERT INTO instrument (instrument_name) VALUES ('sax');
+INSERT INTO instrument (instrument_name) VALUES ('trumpet');
+INSERT INTO instrument (instrument_name) VALUES ('violin');
+INSERT INTO instrument (instrument_name) VALUES ('vibes');
+INSERT INTO instrument (instrument_name) VALUES ('other');
+
+
+
+INSERT INTO duration (duration_name) VALUES ('5');
+INSERT INTO duration (duration_name) VALUES ('5to15');
+INSERT INTO duration (duration_name) VALUES ('15to30');
+INSERT INTO duration (duration_name) VALUES ('30to60');
+INSERT INTO duration (duration_name) VALUES ('moreThan60');
+
+
+
+
+INSERT INTO type (type_name) VALUES ('interview');
+INSERT INTO type (type_name) VALUES ('movie');
+INSERT INTO type (type_name) VALUES ('lecture');
+
+
+
+select * from artist;
+select * from video;
+select * from instrument;
+select * from type;
+select * from videocontainsartist;
+select * from duration;

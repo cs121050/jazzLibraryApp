@@ -1,0 +1,9 @@
+usedArtistNamesFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
+artistNamesFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\artistNames.txt
+videoReceiverFolderPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\videoRecivingFolder
+databaseFeederFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
+searchTagsPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
+databaseΙnitialisationFile#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
+databaseName#jazzLibrary		
+databaseUsername#sa
+databasePassword#admin
