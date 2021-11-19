@@ -4,6 +4,7 @@ videoReceiverFolderPath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoMan
 databaseFeederFilePath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
 searchTagsPath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
 databaseΙnitialisationFile#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
-databaseName#jazzLibrary		
+serverName#XMa
+databaseName#jazzLibraryDB		
 databaseUsername#sa
 databasePassword#admin

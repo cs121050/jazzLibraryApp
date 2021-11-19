@@ -93,16 +93,13 @@ class AboutFrame  extends JFrame {
      }
      
 
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
+    
+    
+    
+    
+    
+    
+    
+    
+ 

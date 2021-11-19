@@ -4,6 +4,7 @@ videoReceiverFolderPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder
 databaseFeederFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
 searchTagsPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
 databaseΙnitialisationFile#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
-databaseName#jazzLibrary		
+serverName#XM
+databaseName#jazzLibraryDB		
 databaseUsername#sa
 databasePassword#admin
