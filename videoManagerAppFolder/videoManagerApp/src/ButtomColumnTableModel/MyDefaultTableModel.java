@@ -3,7 +3,8 @@ package ButtomColumnTableModel;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
-import videoManager.Video;
+
+import JazzLibraryClassies.VideoDatabaseFeeder;
 
 
 public class MyDefaultTableModel extends DefaultTableModel{
@@ -12,10 +13,10 @@ public class MyDefaultTableModel extends DefaultTableModel{
         setDataVector(data, columnNames);
     }
 	
-	public Video getVideoAtRow(int row) {
+	public VideoDatabaseFeeder getVideoAtRow(int row) {
         Vector<Object> rowVector = dataVector.elementAt(row);
 
-        Video selectedRowVideo = new Video();
+        VideoDatabaseFeeder selectedRowVideo = new VideoDatabaseFeeder();
         selectedRowVideo.setArtist_name((String) rowVector.elementAt(0));
         selectedRowVideo.setArtist_instrument((String) rowVector.elementAt(1));
         selectedRowVideo.setVideo_link((String) rowVector.elementAt(2));

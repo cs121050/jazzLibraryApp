@@ -1,10 +1,9 @@
-usedArtistNamesFilePath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
 artistNamesFilePath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\artistNames.txt
 videoReceiverFolderPath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\videoRecivingFolder
 databaseFeederFilePath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
 searchTagsPath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
-databaseΙnitialisationFile#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
-serverName#XMa
+databaseStructureFile#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseStructureFile.txt
+serverName#XM
 databaseName#jazzLibraryDB		
 databaseUsername#sa
 databasePassword#admin

@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import JazzLibraryClassies.*;
+import videoManagerApp.VideoManagerApp;
+
 
 
 public class DBPopulatorfromFeeder {
@@ -21,8 +24,6 @@ public class DBPopulatorfromFeeder {
 	public String[]  pastArtistNames;
     public int artistID;
 	
-	
-
     
     
 	private static void DBPopulatorTool() throws IOException, SQLException {
@@ -45,7 +46,8 @@ public class DBPopulatorfromFeeder {
 			JazzLibraryDAO.createArtist(
 					artists.get(i).getArtist_name(),
 					artists.get(i).getArtist_surname(),
-					artists.get(i).getInstrument_id() 
+					artists.get(i).getInstrument_id(),
+					VideoManagerApp.jazzLibraryDBConnection 
 					);        	
 
 		
@@ -64,7 +66,8 @@ public class DBPopulatorfromFeeder {
 					videos.get(i).getDuration_id(),
 					videos.get(i).getVideo_path(),
 					videos.get(i).getType_id(),
-					videos.get(i).getLocation_id()
+					videos.get(i).getLocation_id(),
+					VideoManagerApp.jazzLibraryDBConnection
 					);
 		}
 
@@ -77,7 +80,8 @@ public class DBPopulatorfromFeeder {
 		for(int i=0;i<videoContainsArtist.size();i++)
 			JazzLibraryDAO.createVideoContainsArtist(
 					videoContainsArtist.get(i).getVideo_id(),
-					videoContainsArtist.get(i).getArtist_id()
+					videoContainsArtist.get(i).getArtist_id(),
+					VideoManagerApp.jazzLibraryDBConnection
 					);        	
 		
 		
@@ -86,7 +90,8 @@ public class DBPopulatorfromFeeder {
 		System.out.println("Loading... (step 4.5/? )...  (uploading quotes)");
 		for(int i=0;i<splashScreenQuotes.size();i++)
 			JazzLibraryDAO.createSplashScreenQuote(
-					splashScreenQuotes.get(i).getQuote_text()
+					splashScreenQuotes.get(i).getQuote_text(),
+					VideoManagerApp.jazzLibraryDBConnection
 					);        	
 		
 		
@@ -401,7 +406,11 @@ public class DBPopulatorfromFeeder {
 		
 		int[] allContainedArtistIds =new int[allContainedArtistNamesAndSurname.length];
 		for(int i=0;i<allContainedArtistNamesAndSurname.length;i++)
-			allContainedArtistIds[i]=JazzLibraryDAO.getArtistId(allContainedArtistNamesAndSurname[i][0],allContainedArtistNamesAndSurname[i][1]);
+			allContainedArtistIds[i]=JazzLibraryDAO.getArtistId(
+					allContainedArtistNamesAndSurname[i][0],
+					allContainedArtistNamesAndSurname[i][1],
+					VideoManagerApp.jazzLibraryDBConnection
+					);
 			
 		return allContainedArtistIds;
 	}
@@ -418,7 +427,7 @@ public class DBPopulatorfromFeeder {
 	public static int getVideoId(String videoLine) {
 		
     	String videoPath=getVideoPath(videoLine);
-		int videoId=JazzLibraryDAO.getVideoId(videoPath);
+		int videoId=JazzLibraryDAO.getVideoId(videoPath,VideoManagerApp.jazzLibraryDBConnection);
 		
 		
 		return videoId;
@@ -478,7 +487,7 @@ public class DBPopulatorfromFeeder {
 	        }
 			
 		
-	    	int videoDurationId=JazzLibraryDAO.getDurationId(durationRepresentative);
+	    	int videoDurationId=JazzLibraryDAO.getDurationId(durationRepresentative,VideoManagerApp.jazzLibraryDBConnection);
 	
 			
 			return videoDurationId;
@@ -507,7 +516,7 @@ public class DBPopulatorfromFeeder {
 		
 		String videoType = splitContentLine[5];
 		
-    	int videoTypeId=JazzLibraryDAO.getTypeId(splitContentLine[5]);
+    	int videoTypeId=JazzLibraryDAO.getTypeId(splitContentLine[5],VideoManagerApp.jazzLibraryDBConnection);
 		
 		
 		
@@ -549,7 +558,7 @@ public class DBPopulatorfromFeeder {
 		
 		String instrumentName= splitContentLine[1];
 		
-    	int instrumentId=JazzLibraryDAO.getInstrumentId(instrumentName);
+    	int instrumentId=JazzLibraryDAO.getInstrumentId(instrumentName,VideoManagerApp.jazzLibraryDBConnection);
 		
 		
 		
