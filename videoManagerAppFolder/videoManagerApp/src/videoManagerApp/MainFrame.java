@@ -432,7 +432,7 @@ public class MainFrame extends JFrame {
             		
                 	VideoDownloaderFrame videoDownloaderFrame = new VideoDownloaderFrame();
 					videoDownloaderFrame.prepareUI();
-				} catch (IOException e1) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

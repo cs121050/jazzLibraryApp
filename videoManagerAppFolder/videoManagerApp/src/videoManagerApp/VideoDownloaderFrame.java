@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 
 import javax.swing.BoxLayout;
@@ -33,6 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -46,90 +49,102 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import youtubeDownloaderSyncPipe.*;
 
 
-/**
-*
-* @author nick
-*/
+
 public class VideoDownloaderFrame extends JFrame {
-    
-    private JLabel warningMessage_Lb;
-    
-    private Component  download_icon_large;
-
-    
-    public VideoDownloaderFrame() {
-       super();
-
-       ImageIcon  download_icon_large = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\download_icon_large.png");
-       
-       warningMessage_Lb=new JLabel("");
-       warningMessage_Lb.setIcon(download_icon_large);
-
-    }
-    
-    public void prepareUI() throws IOException {
-        
-        
-
-    	JPanel addAristNamePanel = new JPanel();
-    	addAristNamePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-    	
-    	addAristNamePanel.add(warningMessage_Lb);
-
-    	
-    	
-    	this.add(addAristNamePanel, BorderLayout.CENTER);
-    	
-        
-        
-        this.setSize(300, 120);
-        this.setLocationRelativeTo(null);
-        this.setTitle("Video Downloader");
-        this.setVisible(false);
-        setResizable(false);
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
 
         
-        
-        
-	    if(VideoManagerApp.isResourcesAtributesInputCorrect()==true){
+	    private JLabel warningMessage_Lb;
+
+	    public static StringBuffer progress_Ta;  
+
+	    
+	    
+	    public VideoDownloaderFrame() {
+	       super();
+
+	       
+	       warningMessage_Lb=new JLabel("n/a");
+	       
+	       
+	       progress_Ta=new StringBuffer("");
+	       
+	    }
+	    
+	    
+	    public void prepareUI() throws Exception {
 	        
-	    	warningMessage_Lb.setText("Do Not Turn Off Until Finish.. .");
-	    	warningMessage_Lb.setForeground(Color.green);
 	    	
-			ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder = downloadVideosAndUpdateFeedingFile();  
+	    	this.add(warningMessage_Lb, BorderLayout.NORTH);	    	
+	        
+	        
+	        this.setSize(300, 80);
+	        this.setLocationRelativeTo(null);
+	        this.setTitle("Video Downloader");
+	        this.setVisible(true);
+	        this.setResizable(false);
+	        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-			writeVideoArrayListToFile(updatedVideoDatabaseFeeder,VideoManagerApp.databaseFeederFilePath);
+
+
+	        
+	        
+		    if(VideoManagerApp.isResourcesAtributesInputCorrect()==true){
+		        
+		    	warningMessage_Lb.setText("Do Not Turn Off Until Finish.. .");
+		    	warningMessage_Lb.setForeground(Color.red);
+		    	
+
+		    	JOptionPane.showMessageDialog(this,
+		                "Video Downloading is Starting ,it might take over 10 hours so be patient , if you close it next time it will continue where it stoped", "Coded Message",
+		                JOptionPane.INFORMATION_MESSAGE);
+		    	
+		    	progress_Ta.append("~Video Downloading~  (1/2)"+"\n");
+		    	youtubeVideoDownloader();  
+
+
+		    	progress_Ta.append("~Video Namegiving~  (2/2)"+"\n");
+				ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder = videoDataBaseFeedingFilleNameDurationGiver();
+				writeVideoArrayListToFile(updatedVideoDatabaseFeeder,VideoManagerApp.databaseFeederFilePath);
+
+
+		    	progress_Ta.append("~Downloading Complited Successfully"+"\n");
+		    	
+		    	
+		    }
+		    else { 
+		    	
+		    	warningMessage_Lb.setText("Databade Feading file can't found , go to Settings and comfigure the Path");
+		    	warningMessage_Lb.setForeground(Color.red);
+		    	
+		    }
+		    
+		    
+		    
+		    
+		    
+		    this.addWindowListener(new WindowAdapter() {
+	            @Override                               
+	            public void windowClosing(WindowEvent e) {
+	            	
+	            	exitApp();       
+	            }
+	        });
+	        
+
+		    
+		    
 	    }
-	    else { 
-	    	
-	    	warningMessage_Lb.setText("Databade Feading file can't found , go to Settings and comfigure the Path");
-	    	warningMessage_Lb.setForeground(Color.red);
-	    	
-	    }
 
-        
+	        
 
-        
-        
-	    
-	    
-	    
-        
-        this.addWindowListener(new WindowAdapter() {
-            @Override                               
-            public void windowClosing(WindowEvent e) {
-            	setInvisible();       
-            }
-        });
-
-        
-   
-    }
 
 
     private void writeVideoArrayListToFile(ArrayList<VideoDatabaseFeeder> videos, String databaseFeederFilePath) throws IOException {
@@ -145,103 +160,90 @@ public class VideoDownloaderFrame extends JFrame {
 	}
     
     
-    private ArrayList<VideoDatabaseFeeder> downloadVideosAndUpdateFeedingFile() throws IOException {
+    
+    
+    private ArrayList<VideoDatabaseFeeder> videoDataBaseFeedingFilleNameDurationGiver() throws Exception {
+	
+    	int counter=0;
+    		
+		ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = fromVideoDatabaseFeedingFileToArrayList();
 
-    	
-    	
-        
-        String[] cmd = { "cmd"};
-
-
-        
-        
-        
-        
-        
-		ArrayList<VideoDatabaseFeeder> videoDatabaseFeeder = fromVideoDatabaseFeedingFileToArrayList();
-
+		JSONParser parser = new JSONParser();
 		
-		ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder = fromVideoDatabaseFeedingFileToArrayList();
+        for(int i=0;i<videoDatabaseFeederList.size();i++){
 
-                 
-        
-        for(int i=0;i<videoDatabaseFeeder.size();i++){
+        	counter++;
+	    	progress_Ta.append(""+counter+"\\"+videoDatabaseFeederList.size()+"\n");
         	
-        	
-        	
-        	
-        	   
-            
-            
-            
-        	String videoURL=videoDatabaseFeeder.get(i).getVideo_link().replaceAll("\\s+","_");
+            File videoInfoJsonFile = new File(VideoManagerApp.videoReceiverFolderPath+"\\"+videoDatabaseFeederList.get(i).getVideo_id()+".json");           
+            if( (videoDatabaseFeederList.get(i).getVideo_name().equals("???") 
+            		|| videoDatabaseFeederList.get(i).getVideo_duration().equals("???")
+            			) && videoInfoJsonFile.exists() )  {
+                
+            	
+            	String videpJsonInfoString = readFileAsString(VideoManagerApp.videoReceiverFolderPath+"\\"+videoDatabaseFeederList.get(i).getVideo_id()+".json");            	
+            	String[] spitedVideoInfoJsonString1 = videpJsonInfoString.split("\"title\": ");
+            	String[] isolateVideoTitleValueString = spitedVideoInfoJsonString1[1].split(",");
+                String videoTitleValue = isolateVideoTitleValueString[0].replaceAll("\"", "");
+            	
+                String[] spitedVideoInfoJsonString2 = videpJsonInfoString.split("\"duration\": ");
+            	String[] isolateDurationValueString = spitedVideoInfoJsonString2[1].split(",");
+                String durationValue = isolateDurationValueString[0].replaceAll("\"", "");
+            	
 
+                videoDatabaseFeederList.get(i).setVideo_name(videoTitleValue);
+                videoDatabaseFeederList.get(i).setVideo_duration(durationValue);
+            }
+
+        }
+
+        return videoDatabaseFeederList;
+	}
+    
+    
+    
+    
+	public static String readFileAsString(String file)throws Exception
+	{
+	    return new String(Files.readAllBytes(Paths.get(file)));
+	}
+    
+    
+    
+    private void youtubeVideoDownloader() throws IOException {
+    	
+    	int counter=0;
+    	
+    	
+		ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = fromVideoDatabaseFeedingFileToArrayList();
+
+        for(int i=0;i<videoDatabaseFeederList.size();i++){
+        	
+        	counter++;
+	    	progress_Ta.append(""+counter+"\\"+videoDatabaseFeederList.size()+"\n");
             
+        	String videoURL=videoDatabaseFeederList.get(i).getVideo_link().replaceAll("\\s+","_");
+
                 try {
-                	Process proc =proc = Runtime.getRuntime().exec(cmd);
+                	Process proc =proc = Runtime.getRuntime().exec("cmd");
                     new Thread(new SyncPipe(proc.getErrorStream(), System.err)).start();
                     new Thread(new SyncPipe(proc.getInputStream(), System.out)).start();
                     
                     OutputStream outputStream = proc.getOutputStream();
                     PrintWriter outputStreamWriter = new PrintWriter(outputStream);     
                     
-                    InputStream inputStream = proc.getInputStream();
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                    
                     outputStreamWriter.println(VideoManagerApp.videoReceiverFolderPath+"\\"+"youtube-dl -o %(id)s --write-info-json "+videoURL);  
 
-                    
-                    
-                    if(videoDatabaseFeeder.get(i).getVideo_name().equals("???") || videoDatabaseFeeder.get(i).getVideo_duration().equals("???")  )  {
-	                    
-                    	
-	                    
-	                    
-                    	//dibase to json arxeio ,, me onoma to Video_Id  .info.json   ,,,,,,,  kanto split , kai pare to onoma kai to duration
-
-	                    //videoDatabaseFeeder.get(i).setVideo_name(videosTitle);
-	                    //videoDatabaseFeeder.get(i).setVideo_duration(videosDuration);
-	                    
-	                    updatedVideoDatabaseFeeder.add(videoDatabaseFeeder.get(i));
-                    }
-                    else {
-	                    updatedVideoDatabaseFeeder.add(videoDatabaseFeeder.get(i));
-                    }
-                    
-                    
-                    
-                    
-
-                    
- 
-                	
 
                     outputStreamWriter.close();  
-
                     
-                    proc.waitFor();
-                    
-                    
-
-                    
-                    
+                    proc.waitFor();    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-            
-                             
-            
         }
-    	
-    	
         
-        
-        
-        return updatedVideoDatabaseFeeder;
-	}
+    }
 
     
     
@@ -286,6 +288,13 @@ public class VideoDownloaderFrame extends JFrame {
 
 	
 	
+	
+	private void exitApp() {
+        int i = JOptionPane.showConfirmDialog(MainFrame.this, "are you sure you want to Exit?");
+        if (i == JOptionPane.YES_OPTION) {
+        
+            System.exit(0);
+        }
 	
 	
 	private void setInvisible() {
