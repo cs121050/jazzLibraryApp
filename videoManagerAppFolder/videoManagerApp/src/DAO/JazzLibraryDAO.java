@@ -1,16 +1,11 @@
 package DAO;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import JazzLibraryClassies.*;
 
@@ -51,22 +46,40 @@ public class JazzLibraryDAO {
     }
     
     
+    
     public static void closeConnection(Connection con) throws SQLException{
         con.close(); 
     }
     
     
     
-//    try {
-//        Class.forName("net.sourceforge.jtds.jdbc.Driver");
-//       conn = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/jazzLibraryDB","nikos","admin");
-//   } catch (ClassNotFoundException | SQLException ex) {
-//       System.out.println("DB Connectrion exception " + ex);
-//   }
-    
-    
-    
 
+    
+    
+    public static void dropDatabaseTablesAndCreateNew(String databaseStructureSqlFile,Connection con) {
+        
+		
+		Instrument instrument = new Instrument();         
+        try {
+            PreparedStatement ps = con.prepareStatement(" drop table if exists VideoContainsArtist"+ "\n"
+            		+ " drop table if exists Video" + "\n"
+            		+ " drop table if exists Artist" + "\n"
+            		+ " drop table if exists Type" + "\n"
+            		+ " drop table if exists SplashScreenQuotes" + "\n"
+            		+ " drop table if exists Instrument" + "\n"
+            		+ " drop table if exists Duration" + "\n"
+            		+ databaseStructureSqlFile);
+			ResultSet rs=ps.executeQuery(); 
+        	
+        	rs.next();
+        	instrument.setInstrument_id(rs.getInt(1)); 
+        	
+        } catch (SQLException ex) {
+
+        }           
+
+    }
+    
 
 
     public static int getInstrumentId(String instrument_name,Connection con) {

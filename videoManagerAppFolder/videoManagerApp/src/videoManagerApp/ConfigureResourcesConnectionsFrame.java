@@ -3,30 +3,17 @@ package videoManagerApp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DateFormat;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -34,19 +21,9 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
-import java.net.URI;
 
 import DAO.JazzLibraryDAO;
 
@@ -66,6 +43,8 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     private JLabel videoReceivingFolderPath_Lb;
     private JLabel searchTagsFilePath_Lb;
     private JLabel databaseStructureFilePath_Lb;
+    private JLabel splashScreenQuotesFilePath_Lb;
+
 
     
     private JLabel databaseWarning_Lb;
@@ -82,18 +61,21 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     private JTextField videoReceivingFolderPath_Tf;
     private JTextField searchTagsPath_Tf;
     private JTextField databaseStructureFilePath_Tf;
+    private JTextField splashScreenQuotesFilePath_Tf;
+
 
     
     private JButton databaseConnection_Btn;
  
     private JButton artistNamesFilePath_browse_Btn;
     private JButton databaseFeederFilePath_browse_Btn;    
-    private JButton videoReceivingFolder_browse_Btn;
-    private JButton searchTagsPath_browse_Btn;
-    private JButton databaseStructureFile_Btn;
+    private JButton videoReceivingFolderPath_browse_Btn;
+    private JButton searchTagsFilePath_browse_Btn;
+    private JButton databaseStructureFilePath_Btn;
+    private JButton splashScreenQuotesFilePath_Btn;
     private JButton resourcesLink_Btn;
     
-	JFileChooser fileChouser = new JFileChooser();
+	JFileChooser fileChouser = new JFileChooser(new File(VideoManagerAppMain.resourcesFolder));
 
     
     public ConfigureResourcesConnectionsFrame() {
@@ -109,6 +91,8 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
        videoReceivingFolderPath_Lb=new JLabel("Video Receiving Folder: ");
        searchTagsFilePath_Lb=new JLabel("Search Tags Path: ");
        databaseStructureFilePath_Lb=new JLabel("DB structure File: ");
+       splashScreenQuotesFilePath_Lb=new JLabel("Splash Screen Quotes: ");
+
        
        
        
@@ -118,35 +102,38 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
         
        
        serverName_Tf = new JTextField(10);
-       serverName_Tf.setText(VideoManagerApp.serverName);
+       serverName_Tf.setText(VideoManagerAppMain.serverName);
        databaseName_Tf = new JTextField(10);
-       databaseName_Tf.setText(VideoManagerApp.databaseName);
+       databaseName_Tf.setText(VideoManagerAppMain.databaseName);
        databaseUsername_Tf = new JTextField(10);
-       databaseUsername_Tf.setText(VideoManagerApp.databaseUsername);
+       databaseUsername_Tf.setText(VideoManagerAppMain.databaseUsername);
        databasePassword_Tf = new JTextField(10);
-       databasePassword_Tf.setText(VideoManagerApp.databasePassword);
+       databasePassword_Tf.setText(VideoManagerAppMain.databasePassword);
        
 
        
        artistNamesFilePath_Tf = new JTextField(10);
-       artistNamesFilePath_Tf.setText(VideoManagerApp.artistNamesFilePath);
+       artistNamesFilePath_Tf.setText(VideoManagerAppMain.artistNamesFilePath);
        databaseFeederFilePath_Tf = new JTextField(10);
-       databaseFeederFilePath_Tf.setText(VideoManagerApp.databaseFeederFilePath);
+       databaseFeederFilePath_Tf.setText(VideoManagerAppMain.databaseFeederFilePath);
        videoReceivingFolderPath_Tf = new JTextField(10);
-       videoReceivingFolderPath_Tf.setText(VideoManagerApp.videoReceiverFolderPath);
+       videoReceivingFolderPath_Tf.setText(VideoManagerAppMain.videoReceiverFolderPath);
        searchTagsPath_Tf = new JTextField(10);
-       searchTagsPath_Tf.setText(VideoManagerApp.searchTagsFilePath);
+       searchTagsPath_Tf.setText(VideoManagerAppMain.searchTagsFilePath);
        databaseStructureFilePath_Tf = new JTextField(10);
-       databaseStructureFilePath_Tf.setText(VideoManagerApp.databaseStructureFile);
+       databaseStructureFilePath_Tf.setText(VideoManagerAppMain.databaseStructureFilePath);
+       splashScreenQuotesFilePath_Tf = new JTextField(10);
+       splashScreenQuotesFilePath_Tf.setText(VideoManagerAppMain.splashScreenQuotes);
        
        databaseConnection_Btn = new JButton("Connect");
        
-       Icon browse_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\browse_icon.png");
+       Icon browse_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\browse_icon.png");
        artistNamesFilePath_browse_Btn = new JButton(browse_icon);
        databaseFeederFilePath_browse_Btn = new JButton(browse_icon);
-       videoReceivingFolder_browse_Btn = new JButton(browse_icon);
-       searchTagsPath_browse_Btn = new JButton(browse_icon);
-       databaseStructureFile_Btn = new JButton(browse_icon);
+       videoReceivingFolderPath_browse_Btn = new JButton(browse_icon);
+       searchTagsFilePath_browse_Btn = new JButton(browse_icon);
+       databaseStructureFilePath_Btn = new JButton(browse_icon);
+       splashScreenQuotesFilePath_Btn = new JButton(browse_icon);
        resourcesLink_Btn = new JButton("LINK");
 
     }
@@ -179,7 +166,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     	
     	
     	JPanel fileResourcesAtributes = new JPanel();
-    	fileResourcesAtributes.setLayout(new GridLayout(5,3));
+    	fileResourcesAtributes.setLayout(new GridLayout(6,3));
     	fileResourcesAtributes.add(artistNamesFilePath_Lb);
     	fileResourcesAtributes.add(artistNamesFilePath_Tf);
     	fileResourcesAtributes.add(artistNamesFilePath_browse_Btn);
@@ -188,13 +175,16 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     	fileResourcesAtributes.add(databaseFeederFilePath_browse_Btn);
     	fileResourcesAtributes.add(videoReceivingFolderPath_Lb);
     	fileResourcesAtributes.add(videoReceivingFolderPath_Tf);
-    	fileResourcesAtributes.add(videoReceivingFolder_browse_Btn);
+    	fileResourcesAtributes.add(videoReceivingFolderPath_browse_Btn);
     	fileResourcesAtributes.add(searchTagsFilePath_Lb);
     	fileResourcesAtributes.add(searchTagsPath_Tf);
-    	fileResourcesAtributes.add(searchTagsPath_browse_Btn);
+    	fileResourcesAtributes.add(searchTagsFilePath_browse_Btn);
     	fileResourcesAtributes.add(databaseStructureFilePath_Lb);
     	fileResourcesAtributes.add(databaseStructureFilePath_Tf);
-    	fileResourcesAtributes.add(databaseStructureFile_Btn);
+    	fileResourcesAtributes.add(databaseStructureFilePath_Btn);
+    	fileResourcesAtributes.add(splashScreenQuotesFilePath_Lb);
+    	fileResourcesAtributes.add(splashScreenQuotesFilePath_Tf);
+    	fileResourcesAtributes.add(splashScreenQuotesFilePath_Btn);
 
     	
     	JPanel fileResourcesButton = new JPanel();
@@ -220,7 +210,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     	isResourcesTFieldAtributesInputCorrect();   	
     	
         
-        this.setSize(400, 260);
+        this.setSize(400, 285);
         this.setLocationRelativeTo(null);
         this.setTitle("Configure Resources Connections");
         this.setVisible(true);
@@ -257,7 +247,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
             }
         });
         
-        videoReceivingFolder_browse_Btn.addActionListener(new ActionListener() {
+        videoReceivingFolderPath_browse_Btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -277,17 +267,26 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
             	
 
             	
-            	String[] resourcesAtributes = new String[4];
+            	String[] resourcesAtributes = new String[5];
             	
             	resourcesAtributes[0]=artistNamesFilePath_Tf.getText().trim();
             	resourcesAtributes[1]=databaseFeederFilePath_Tf.getText().trim();
     			resourcesAtributes[2]=videoReceivingFolderPath_Tf.getText().trim();
 				resourcesAtributes[3]=searchTagsPath_Tf.getText().trim();
+				resourcesAtributes[4]=databaseStructureFilePath_Tf.getText().trim();
 
+
+            	 
             	
-            	
-                if (isResourcesTFieldAtributesInputCorrect()==true)
-                	replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerApp.resourcesConnections);
+                if (isResourcesTFieldAtributesInputCorrect()==true) {
+                	VideoManagerAppMain.replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerAppMain.resourcesConnections);
+                	
+                	VideoManagerAppMain.artistNamesFilePath = artistNamesFilePath_Tf.getText().trim();
+                	VideoManagerAppMain.databaseFeederFilePath = databaseFeederFilePath_Tf.getText().trim();
+                	VideoManagerAppMain.videoReceiverFolderPath = videoReceivingFolderPath_Tf.getText().trim();
+                	VideoManagerAppMain.searchTagsFilePath = searchTagsPath_Tf.getText().trim();
+                	VideoManagerAppMain.databaseStructureFilePath = databaseStructureFilePath_Tf.getText().trim();
+                }
 
             }
         });
@@ -307,12 +306,15 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 				try {
 					
 					if (isDatabaseTFieldAtributesInputCorrect()==true){
-						replaceOldDatabaseAtributesFromFile(databaseAtributes,VideoManagerApp.resourcesConnections);
+						replaceOldDatabaseAtributesFromFile(databaseAtributes,VideoManagerAppMain.resourcesConnections);
 
-						getConnection();
-									    
+						
+						VideoManagerAppMain.serverName = serverName_Tf.getText().trim();
+						VideoManagerAppMain.databaseName = databaseName_Tf.getText().trim();
+						VideoManagerAppMain.databaseUsername = databaseUsername_Tf.getText().trim();
+						VideoManagerAppMain.databasePassword = databasePassword_Tf.getText().trim();
+						
 					}
-					
 					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -333,22 +335,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
     }
     
     
-    
-    private void getConnection() {
-    	
-    	String serverName=serverName_Tf.getText().trim();
-		String databaseName=databaseName_Tf.getText().trim();
-	    String databaseUsername=databaseUsername_Tf.getText().trim();
-	    String databasePassword=databasePassword_Tf.getText().trim();
-	    
-	    DAO.JazzLibraryDAO getConnection = new DAO.JazzLibraryDAO();
-	    Connection con =JazzLibraryDAO.getConnection(serverName,databaseName,databaseUsername,databasePassword);		
-    	
-	    VideoManagerApp.jazzLibraryDBConnection=con;
-    }
 
-    
-    
     
     private boolean isResourcesTFieldAtributesInputCorrect() {
     	
@@ -583,51 +570,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 	
 	
 	
-	
-public static void replaceOldResourceAtributesFromFile(String[] resourceAtributes, String resourcesConnectionPath) {
-	    
-		try {
 
-	        BufferedReader resourcesConnectionFile = new BufferedReader(new FileReader(resourcesConnectionPath));
-	        StringBuffer inputBuffer = new StringBuffer();
-	        String resourcesConnectionLine;
-
-	        while ((resourcesConnectionLine = resourcesConnectionFile.readLine()) != null) {
-	            
-	        	String[] splitedResourcesConnectionLine = resourcesConnectionLine.split("#");
-	        	
-	        	if(splitedResourcesConnectionLine[0].equals("artistNamesFilePath")) 
-	        		inputBuffer.append("artistNamesFilePath#"+resourceAtributes[0]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("databaseFeederFilePath")) 
-	        		inputBuffer.append("databaseFeederFilePath#"+resourceAtributes[1]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("videoReceiverFolderPath")) 
-	        		inputBuffer.append("videoReceiverFolderPath#"+resourceAtributes[2]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("searchTagsPath")) 
-	        		inputBuffer.append("searchTagsPath#"+resourceAtributes[3]);
-	        	
-	        	else 
-	        		inputBuffer.append(resourcesConnectionLine); //to afineis opos einai
-
-	            
-	        }
-	        resourcesConnectionFile.close();
-
-	        // write the new string with the replaced line OVER the same file
-	        FileOutputStream fileOut = new FileOutputStream(resourcesConnectionPath);
-	        fileOut.write(inputBuffer.toString().getBytes());
-	        fileOut.close();
-
-	    } catch (Exception e) {
-	        System.out.println("[resourcesAtributes]Problem replacing resourcesConnectionfile line.");
-	    }
-	    
-	}
-	
-	
-	
 	    
     
 	public static void replaceOldDatabaseAtributesFromFile(String[] databaseAtributes, String resourcesConnectionPath) {
@@ -668,6 +611,11 @@ public static void replaceOldResourceAtributesFromFile(String[] resourceAtribute
 	        FileOutputStream fileOut = new FileOutputStream(resourcesConnectionPath);
 	        fileOut.write(inputBuffer.toString().getBytes());
 	        fileOut.close();
+	        
+	        
+	        
+	        
+	      
 
 	    } catch (Exception e) {
 	        System.out.println("[databaseAtributes]Problem replacing resourcesConnectionfile line.");

@@ -3,7 +3,6 @@ package videoManagerApp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -17,25 +16,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JFileChooser;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 
 
 /**
@@ -65,7 +54,7 @@ public class AddArtistFrame extends JFrame {
 
        addSingleAtistName_Tf = new JTextField(10);
         
-       Icon browse_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\browse_icon.png");
+       Icon browse_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\browse_icon.png");
        
        addSingleAtistName_Btn = new JButton("Go");
        browseManyArtistNames_Btn = new JButton(browse_icon);
@@ -74,7 +63,7 @@ public class AddArtistFrame extends JFrame {
     
     public void prepareUI() {
         
-       if(!VideoManagerApp.isResourcesAtributesInputCorrect()) {
+       if(!VideoManagerAppMain.isResourcesAtributesInputCorrect()) {
     	   addArtistNameWarning_Lb.setText("\t artistNameFile Path is not correct .. .");
     	   addArtistNameWarning_Lb.setForeground(Color.red);
        }
@@ -121,11 +110,11 @@ public class AddArtistFrame extends JFrame {
     	this.add(addArtistNameWarning_Lb, BorderLayout.SOUTH);
         
         
-        this.setSize(400, 140);
+        this.setSize(420, 160);
         this.setLocationRelativeTo(null);
         this.setTitle("Add Artist");
         this.setVisible(true);
-        setResizable(false);
+        setResizable(false); 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 
@@ -138,7 +127,7 @@ public class AddArtistFrame extends JFrame {
 
             	FileWriter artistNameFileW;
 				try {
-					artistNameFileW = new FileWriter(VideoManagerApp.artistNamesFilePath, true);
+					artistNameFileW = new FileWriter(VideoManagerAppMain.artistNamesFilePath, true);
 					BufferedWriter artistNameBW = new BufferedWriter(artistNameFileW);
 	                PrintWriter artistNamePW = new PrintWriter(artistNameBW);
 					
@@ -176,7 +165,7 @@ public class AddArtistFrame extends JFrame {
 	                	FileReader newArtistNameFR=new FileReader(newArtistNamesFilePath);
 	                	BufferedReader newArtistNameBR = new BufferedReader(newArtistNameFR);
 	                	
-	                	FileWriter artistNameFileW = new FileWriter(VideoManagerApp.artistNamesFilePath, true);
+	                	FileWriter artistNameFileW = new FileWriter(VideoManagerAppMain.artistNamesFilePath, true);
 	 					BufferedWriter artistNameBW = new BufferedWriter(artistNameFileW);
 	 	                PrintWriter artistNamePW = new PrintWriter(artistNameBW);
 	 	                

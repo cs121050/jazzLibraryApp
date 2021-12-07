@@ -7,16 +7,9 @@ package videoManagerApp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -80,7 +73,7 @@ class AboutFrame  extends JFrame {
     
      private void determineConectionCondition() {
 
-    	 if (VideoManagerApp.isLogedInToServer == true) {
+    	 if (VideoManagerAppMain.isLogedInToServer == true) {
     		 conectedToServerConditionValue_Lb=new JLabel("Online!");
     	     appVersionValue_Lb.setForeground(Color.green);
 

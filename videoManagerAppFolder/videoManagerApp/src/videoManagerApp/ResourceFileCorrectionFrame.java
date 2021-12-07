@@ -2,10 +2,6 @@ package videoManagerApp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,39 +9,24 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.Normalizer;
 
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import JazzLibraryClassies.VideoDatabaseFeeder;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 
-import java.util.Arrays;
-import java.util.Collections;
+
+
 /**
 *
 * @author nick
@@ -75,7 +56,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
     
     public void prepareUI() {
         
-    	if(!VideoManagerApp.isResourcesAtributesInputCorrect()) {
+    	if(!VideoManagerAppMain.isResourcesAtributesInputCorrect()) {
      	   resourceFileCorrectionWarning_Lb.setText("artistNameFile or videoDBFeederFile Path is not correct .. .");
      	   resourceFileCorrectionWarning_Lb.setForeground(Color.red);
         }
@@ -115,10 +96,11 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	            	else if(videoDBFeederFileCorrection_Cb.isSelected()) {
 	            		videoDBFeedingFileCorrection();
 	            	}
-	            	else if(artistNameFileCorrection_Cb.isSelected() || videoDBFeederFileCorrection_Cb.isSelected()) {
+	            	else if(artistNameFileCorrection_Cb.isSelected() && videoDBFeederFileCorrection_Cb.isSelected()) {
 	            		artistNameFileCorrection();
 	            		videoDBFeedingFileCorrection();
 	            	}
+	            	setInvisible();
 	            	
             	} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -126,6 +108,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
 				}
             	
             }
+            
         });
         
         
@@ -152,7 +135,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
     private void artistNameFileCorrection() throws IOException {
 
     	
-    	FileReader artistNameFR=new FileReader(VideoManagerApp.artistNamesFilePath);
+    	FileReader artistNameFR=new FileReader(VideoManagerAppMain.artistNamesFilePath);
     	BufferedReader artistNameBR = new BufferedReader(artistNameFR);
     	
     	ArrayList<String> artistNames = new ArrayList<String>();
@@ -173,7 +156,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
         
         artistNames = RemoveArtistNameDuplication(artistNames);
 
-        writeStringArrayListToFile(artistNames,VideoManagerApp.artistNamesFilePath);
+        writeStringArrayListToFile(artistNames,VideoManagerAppMain.artistNamesFilePath);
 
 	}
     
@@ -182,7 +165,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	private void videoDBFeedingFileCorrection() throws IOException {
 	
 	    	
-	    	FileReader videoFR=new FileReader(VideoManagerApp.databaseFeederFilePath);
+	    	FileReader videoFR=new FileReader(VideoManagerAppMain.databaseFeederFilePath);
 	    	BufferedReader videoBR = new BufferedReader(videoFR);
 	    	
 	    	ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = new ArrayList<VideoDatabaseFeeder>();
@@ -194,10 +177,13 @@ public class ResourceFileCorrectionFrame extends JFrame {
 
 	        	String[] splitedVideoLine=videoLine.split("#");
 	        	
+	        	String[] splitLink=splitedVideoLine[2].trim().split("=");
+	    		String linkWithoutSeconds=splitLink[0]+"="+splitLink[1];
+	        	
 	        	VideoDatabaseFeeder videoDatabaseFeeder = new VideoDatabaseFeeder();
 	        	videoDatabaseFeeder.setArtist_name(splitedVideoLine[0]);
 	        	videoDatabaseFeeder.setArtist_instrument(splitedVideoLine[1]);
-	        	videoDatabaseFeeder.setVideo_link(splitedVideoLine[2]);
+	        	videoDatabaseFeeder.setVideo_link(linkWithoutSeconds);
 	        	videoDatabaseFeeder.setVideo_name(splitedVideoLine[3]);
 	        	videoDatabaseFeeder.setVideo_duration(splitedVideoLine[4]);
 	        	videoDatabaseFeeder.setVideo_type(splitedVideoLine[5]);
@@ -217,7 +203,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	        
 	        videoDatabaseFeederList = RemoveVideoDuplication(videoDatabaseFeederList);
 	
-	        writeVideoArrayListToFile(videoDatabaseFeederList,VideoManagerApp.databaseFeederFilePath);
+	        writeVideoArrayListToFile(videoDatabaseFeederList,VideoManagerAppMain.databaseFeederFilePath);
 
 	}
 

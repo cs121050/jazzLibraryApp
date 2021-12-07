@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/splash_screen_background"
     android:id="@+id/splash_screen"
-    tools:context="com.example.jazzLibrary.UIListenersActivity"
+    tools:context="com.example.jazzLibraryΑctivities.jazzLibraryAppMainActivity"
     android:orientation="vertical"
     android:screenOrientation="portrait">
 

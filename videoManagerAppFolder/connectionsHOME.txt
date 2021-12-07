@@ -1,8 +1,10 @@
 artistNamesFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\artistNames.txt
 videoReceiverFolderPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\videoRecivingFolder
-databaseFeederFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\dummyDBFeeder2.txt
+databaseFeederFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseFeederFile.txt
 searchTagsPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\searchTags.txt
-databaseStructureFile#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseΙnitialisationFile.txt
+databaseStructureFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseStructureFile.txt
+databaseFeederFileMASTERPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseFeederFileMASTER.txt
+splashScreenQuotes#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\splashScreenQuotes.txt
 serverName#XM
 databaseName#jazzLibraryDB		
 databaseUsername#sa

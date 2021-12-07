@@ -8,7 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,19 +16,19 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -48,8 +47,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
-import java.awt.Desktop;
 
 
 //my pakages
@@ -85,8 +82,6 @@ public class MainFrame extends JFrame {
 	
     private static JTable databaseFeedingFile_jT;
 	
-    private JTable videoRegistration_jT;
-
     
 	private JLabel artistName_Jl;
 	private JLabel instrumentName_Jl;
@@ -107,13 +102,15 @@ public class MainFrame extends JFrame {
     private String[] type_StringArray = { "interview", "movie", "lecture"};
       
     private JButton loadNextArtist_Btn;
-    private JButton registerAndDownload_Btn;
+    private JButton register_Btn;
 
 
     private JMenuBar menuBar;
     private JMenu setingsMenu;
     private JMenu fileMenu;
     private JMenu helpMenu;
+    private JMenuItem newFeedingFile_Item;
+    private JMenuItem mergeFiles_Item;
     private JMenuItem addArtist_Item;
     private JMenuItem databasePopulator_Item;
     private JMenuItem resorceFileCorrection_Item;
@@ -159,23 +156,27 @@ public class MainFrame extends JFrame {
         
         loadNextArtist_Btn = new JButton("Load Next Artist");
         
-        Icon edit_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\edit_icon.png");
+        Icon edit_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\edit_icon.png");
 
-        Icon add_artist_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\add_artist_icon.png");
-        Icon  correction_resource_files_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\correction_resource_files_icon.png");
-        Icon  database_populator_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\database_populator_icon.png");
-        Icon download_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\download_icon.png");
+        Icon new_feeding_file_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\new_feeding_file_icon.png");
+        Icon merge_files_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\merge_files_icon.png");
+        Icon add_artist_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\add_artist_icon.png");
+        Icon  correction_resource_files_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\correction_resource_files_icon.png");
+        Icon  database_populator_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\database_populator_icon.png");
+        Icon download_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\download_icon.png");
 
-        Icon settings_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\setting_icon.png");
-        Icon refresh_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManager\\refresh_icon.png");
+        Icon settings_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\setting_icon.png");
+        Icon refresh_icon = new ImageIcon("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoManagerApp\\src\\videoManagerApp\\refresh_icon.png");
         
-        registerAndDownload_Btn = new JButton(edit_icon);
+        register_Btn = new JButton(edit_icon);
         
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         setingsMenu = new JMenu("setings");
         helpMenu = new JMenu("Help");
 
+        newFeedingFile_Item = new JMenuItem("New feeding File",new_feeding_file_icon);
+        mergeFiles_Item  = new JMenuItem("Merge Files",merge_files_icon);
         addArtist_Item = new JMenuItem("Add Artist",add_artist_icon);
         resorceFileCorrection_Item  = new JMenuItem("Resorce File Correction",correction_resource_files_icon);
         databasePopulator_Item = new JMenuItem("Database Populator",database_populator_icon);
@@ -186,10 +187,6 @@ public class MainFrame extends JFrame {
 
     }
 
-
-
-    public void removeUI() { 
-    }
 
 
 	public void prepareUI() { 
@@ -228,7 +225,7 @@ public class MainFrame extends JFrame {
         videoRegistrationPanel.add(videoLink_Tf);
         videoRegistrationPanel.add(type_Cb);
         videoRegistrationPanel.add(extraArtist_Tf);
-        videoRegistrationPanel.add(registerAndDownload_Btn);
+        videoRegistrationPanel.add(register_Btn);
 
 
         
@@ -242,9 +239,12 @@ public class MainFrame extends JFrame {
         this.add(tableScrollPane, BorderLayout.NORTH);
         this.add(videoRegistrationPanel, BorderLayout.CENTER);
         this.add(buttonPanel, BorderLayout.SOUTH);
-
+        
+         
+        fileMenu.add(newFeedingFile_Item);
         fileMenu.add(addArtist_Item);
         fileMenu.addSeparator();
+        fileMenu.add(mergeFiles_Item);
         fileMenu.add(resorceFileCorrection_Item);
         fileMenu.addSeparator();
         fileMenu.add(videoDownloader_Item);
@@ -284,7 +284,7 @@ public class MainFrame extends JFrame {
         
 
         
-        registerAndDownload_Btn.addActionListener(new ActionListener() {
+        register_Btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 
@@ -315,7 +315,7 @@ public class MainFrame extends JFrame {
         		
 				try {
 					
-					writeVideoListToFile(videoList,VideoManagerApp.databaseFeederFilePath);
+					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
 					
 					tableModel.insertRow(0, video.toObject());
 					
@@ -340,21 +340,23 @@ public class MainFrame extends JFrame {
 				
 				String[] splitedVideoLink=videoLink_Tf.getText().split("=");
             	String videoId=splitedVideoLink[1];
-            	
-            	
-				return videoId;
+            
+            	String[] splitLink=videoId.split("&t=");
+	    		String videoIdWithoutSeconds=splitedVideoLink[0];
+	    		
+	    		
+	    		
+				return videoIdWithoutSeconds;
 			}
 
 			private String secontIndicatorTrimmer() {
 				//an exei 2 fores = , paei na pei oti to video den 3ekina apo thn arxh
-            	String[] splitedVideoLink=videoLink_Tf.getText().split("=");
-            	String videoLink;
-            	if(splitedVideoLink.length>2) 
-            		videoLink=splitedVideoLink[0]+"="+splitedVideoLink[1];
-            	else
-            		videoLink=videoLink_Tf.getText();
+
+            	String[] splitLink=videoLink_Tf.getText().split("&t=");
+	    		String videoLinkWithoutSeconds=splitLink[0];
             	
-				return videoLink;
+            	
+				return videoLinkWithoutSeconds;
 			}
         });
         
@@ -387,10 +389,64 @@ public class MainFrame extends JFrame {
         
         
         
+        newFeedingFile_Item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	try {
+					newFeedingFileCreation();
+					JOptionPane.showMessageDialog(MainFrame.this, "feeding file has sincronized");
+					
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+ 
+            	
+            }
+        });
         
         
+        mergeFiles_Item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            	try {
+					mergeFeedingFilesToMaster();
+					JOptionPane.showMessageDialog(MainFrame.this, "new feeding file has merged to the Master ");
+					
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+            	
+            }
+
+			private void mergeFeedingFilesToMaster() throws IOException {
+				
+				//blepei an iparxei to MASTER , an den iparxei to dimiourgei ,, an iparxei prosthetei se auto kathe gramh tou onGoingFeedingFile xoris na elenxei tipota
+				
+				//writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFileMASTERPath);
+				
+				File databaseFeederFileMASTER = new File(VideoManagerAppMain.databaseFeederFileMASTERPath);
+				if(!databaseFeederFileMASTER.exists()) { 
+					File f = new File(VideoManagerAppMain.databaseFeederFileMASTERPath);
+					f.getParentFile().mkdirs(); 
+					f.createNewFile();
+				}
+				
+				
+				
+				
+			}
+
+        });
         
+      
         
+       
         
         
         
@@ -444,9 +500,16 @@ public class MainFrame extends JFrame {
         databasePopulator_Item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            //	
-            //	
-             //   
+            
+
+            	try {
+            		
+                	DatabasePopulatorFrame databasePopulatorFrame = new DatabasePopulatorFrame();
+                	databasePopulatorFrame.prepareUI();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 
@@ -458,12 +521,15 @@ public class MainFrame extends JFrame {
             	
             	try {
             		
-					VideoManagerApp.connectionsInitialisation();
+					VideoManagerAppMain.connectionsInitialisation();
 					initialiseResourcesVariables();
 			    	
-
 					tableScrollPane.getViewport().add(databaseFeedingFile_jT);
 
+					fileNameInitialisation();
+					tableScrollPane.setBorder(BorderFactory.createTitledBorder(importedFileName));
+			    	tableScrollPane.getViewport().add(databaseFeedingFile_jT);
+					
 			    	videoRegistrationPanel.removeAll();
 				        videoRegistrationPanel.add(artistName_Jl);
 				        videoRegistrationPanel.add(instrumentName_Jl);
@@ -476,7 +542,7 @@ public class MainFrame extends JFrame {
 					        videoRegistrationPanel.add(videoLink_Tf);
 					        videoRegistrationPanel.add(type_Cb);
 					        videoRegistrationPanel.add(extraArtist_Tf);
-					        videoRegistrationPanel.add(registerAndDownload_Btn);
+					        videoRegistrationPanel.add(register_Btn);
 			    	
 			        revalidate();
 			        repaint();
@@ -508,7 +574,7 @@ public class MainFrame extends JFrame {
         		
 //        		AboutFrame aboutFrame = new AboutFrame();
 //        		aboutFrame.prepareUI();
-        		
+        		 
         	}   
         });
 
@@ -519,12 +585,33 @@ public class MainFrame extends JFrame {
     }
     
     
+	  private void newFeedingFileCreation() throws IOException {
+			
+			File newDatabaseFeedingFile = new File(VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt" );
+			if(!newDatabaseFeedingFile.exists()) {
+				newDatabaseFeedingFile.getParentFile().mkdirs(); 
+				newDatabaseFeedingFile.createNewFile();
+			}
+			VideoManagerAppMain.databaseFeederFilePath = VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
+			
+			String[] resourcesAtributes = new String[5];
+        	
+			//na ftiaxtei global pinakas sto MAIN .. pou na min xriazete na diloneis kathe glamh ,, allla mono mia kathe fora
+        	resourcesAtributes[0]=VideoManagerAppMain.artistNamesFilePath;
+        	resourcesAtributes[1]=VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
+			resourcesAtributes[2]=VideoManagerAppMain.videoReceiverFolderPath;
+			resourcesAtributes[3]=VideoManagerAppMain.searchTagsFilePath;
+			resourcesAtributes[4]=VideoManagerAppMain.databaseStructureFilePath;
+			
+        	VideoManagerAppMain.replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerAppMain.resourcesConnections);
+			
+	  }
 
 
 
 	private ArrayList<String> readSearchTags() throws IOException {
 
-		FileReader flSearchTagsFileLine=new FileReader(VideoManagerApp.searchTagsFilePath);
+		FileReader flSearchTagsFileLine=new FileReader(VideoManagerAppMain.searchTagsFilePath);
     	BufferedReader brSearchTagsFileLine = new BufferedReader(flSearchTagsFileLine);
     	
     	//bale elenxo an iparxoun ta files pou dia vazeis apo mesa
@@ -553,7 +640,7 @@ public class MainFrame extends JFrame {
 
 
 	private void initialiseResourcesVariables() throws IOException {
-		if(VideoManagerApp.isResourcesAtributesInputCorrect()) {
+		if(VideoManagerAppMain.isResourcesAtributesInputCorrect()) {
 	        
         	searchTags = readSearchTags();
 	        artistNameList =  readArtistNamesFileToList();
@@ -573,7 +660,7 @@ public class MainFrame extends JFrame {
 	}
 
 
-
+	
 
 	
 	
@@ -647,11 +734,11 @@ public class MainFrame extends JFrame {
     
     static void fileNameInitialisation() throws IOException {
     	
-		File tempFile = new File(VideoManagerApp.databaseFeederFilePath);
+		File tempFile = new File(VideoManagerAppMain.databaseFeederFilePath);
 		boolean exists = tempFile.exists();
 		
 		
-		String databaseFeederFilePathChanged=VideoManagerApp.databaseFeederFilePath.replace('\\','#');
+		String databaseFeederFilePathChanged=VideoManagerAppMain.databaseFeederFilePath.replace('\\','#');
 		
 	    String[] splitedFilePath = databaseFeederFilePathChanged.split("#");
 		String fileName = splitedFilePath[splitedFilePath.length-1];
@@ -707,7 +794,7 @@ public class MainFrame extends JFrame {
                 
                 try {
                 	
-					writeVideoListToFile(videoList,VideoManagerApp.databaseFeederFilePath);
+					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -731,7 +818,7 @@ public class MainFrame extends JFrame {
                 
                 try {
                 	
-					writeVideoListToFile(videoList,VideoManagerApp.databaseFeederFilePath);
+					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -768,7 +855,7 @@ public class MainFrame extends JFrame {
 		ArrayList<String> remainingArtistNames = new ArrayList<String>();
 
 		
-		FileReader flDatabaseFeederFileLine=new FileReader(VideoManagerApp.databaseFeederFilePath);
+		FileReader flDatabaseFeederFileLine=new FileReader(VideoManagerAppMain.databaseFeederFilePath);
     	BufferedReader brDatabaseFeederFileLine = new BufferedReader(flDatabaseFeederFileLine);
     	
         String DatabaseFeederFileLine=brDatabaseFeederFileLine.readLine();
@@ -792,7 +879,7 @@ public class MainFrame extends JFrame {
     		
     		boolean artistNameFound=false;
     		
-    		FileReader flArtistNamesFileLine=new FileReader(VideoManagerApp.artistNamesFilePath);
+    		FileReader flArtistNamesFileLine=new FileReader(VideoManagerAppMain.artistNamesFilePath);
         	BufferedReader brArtistNamesFileLine = new BufferedReader(flArtistNamesFileLine);
         	
     		
@@ -848,7 +935,7 @@ public class MainFrame extends JFrame {
     
     private static List<VideoDatabaseFeeder> readDatabaseFeederFileToVideoObjects() throws IOException {
     	
-    	FileReader flDatabaseFeederFileLine=new FileReader(VideoManagerApp.databaseFeederFilePath);
+    	FileReader flDatabaseFeederFileLine=new FileReader(VideoManagerAppMain.databaseFeederFilePath);
     	BufferedReader brDatabaseFeederFileLine = new BufferedReader(flDatabaseFeederFileLine);
     	
 
@@ -883,7 +970,7 @@ public class MainFrame extends JFrame {
     
 static ArrayList<String> readArtistNamesFileToList() throws IOException {
     	
-    	FileReader flArtistNamesFileLine=new FileReader(VideoManagerApp.artistNamesFilePath);
+    	FileReader flArtistNamesFileLine=new FileReader(VideoManagerAppMain.artistNamesFilePath);
     	BufferedReader brArtistNamesFileLine = new BufferedReader(flArtistNamesFileLine);
     	
 

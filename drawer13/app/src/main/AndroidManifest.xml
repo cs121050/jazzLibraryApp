@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jazzLibrary">
+    package="com.example.jazzLibraryΑctivities">
 
     <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
@@ -14,7 +14,7 @@
 
 
         <activity
-            android:name="com.example.jazzLibrary.SplashScreenActivity"
+            android:name="com.example.jazzLibraryΑctivities.SplashScreenActivity"
             android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
 
 
         <activity
-            android:name="com.example.jazzLibrary.UIListenersActivity"
+            android:name="com.example.jazzLibraryΑctivities.jazzLibraryAppMainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Drawer13.NoActionBar"
             android:configChanges="orientation|keyboardHidden|smallestScreenSize|screenLayout"

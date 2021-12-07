@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_color_background_animation"
     android:id="@+id/main_layout"
-    tools:context="com.example.jazzLibrary.UIListenersActivity"
+    tools:context="com.example.jazzLibraryΑctivities.jazzLibraryAppMainActivity"
     android:orientation="vertical"
     android:screenOrientation="portrait"
     >

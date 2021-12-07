@@ -7,18 +7,13 @@ package videoManagerApp;
 
 
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import DAO.JazzLibraryDAO;
 
@@ -27,27 +22,25 @@ import DAO.JazzLibraryDAO;
  *
  * @author nick
  */
-public class VideoManagerApp extends JFrame  {
+public class VideoManagerAppMain{
 	
 	
 	public static String resourcesConnections="C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\connectionsOKAA.txt";
-
+	public static String resourcesFolder="C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses";
 	
+	public static String databaseFeederFileMASTERPath="";
 	public static String artistNamesFilePath="";
 	public static String databaseFeederFilePath="";
 	public static String videoReceiverFolderPath="";
 	public static String searchTagsFilePath="";
-	public static String databaseStructureFile="";
-
+	public static String databaseStructureFilePath="";
+	public static String splashScreenQuotes="";
 	
 	public static String serverName="";
 	public static String databaseName="";
 	public static String databaseUsername="";
 	public static String databasePassword="";
-	
-	public static Connection jazzLibraryDBConnection=null;
-
-
+	  
 
 	
 	public static boolean isLogedInToServer=false;
@@ -61,19 +54,6 @@ public class VideoManagerApp extends JFrame  {
     	
     	
     	
-    	
-    	
-    	
-
-    	try {
-			if (isDatabaseAtributesInputCorrect()==true){
-				DAO.JazzLibraryDAO getConnection = new DAO.JazzLibraryDAO();
-				jazzLibraryDBConnection =JazzLibraryDAO.getConnection(serverName,databaseName,databaseUsername,databasePassword);
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
     	
     	
     	
@@ -129,10 +109,16 @@ public class VideoManagerApp extends JFrame  {
             	else if(splitedLineToNameAndPath.get(i)[0].equals("searchTagsPath"))
             		searchTagsFilePath=splitedLineToNameAndPath.get(i)[1];
     			
-            	else if(splitedLineToNameAndPath.get(i)[0].equals("databaseStructureFile"))
-            		databaseStructureFile=splitedLineToNameAndPath.get(i)[1];
+            	else if(splitedLineToNameAndPath.get(i)[0].equals("databaseStructureFilePath"))
+            		databaseStructureFilePath=splitedLineToNameAndPath.get(i)[1];
            
+            	else if(splitedLineToNameAndPath.get(i)[0].equals("databaseFeederFileMASTERPath"))
+            		databaseFeederFileMASTERPath=splitedLineToNameAndPath.get(i)[1];
     			
+            	else if(splitedLineToNameAndPath.get(i)[0].equals("splashScreenQuotes"))
+            		splashScreenQuotes=splitedLineToNameAndPath.get(i)[1];
+    			
+
             	
             	else if(splitedLineToNameAndPath.get(i)[0].equals("serverName"))
             		serverName=splitedLineToNameAndPath.get(i)[1];
@@ -145,8 +131,7 @@ public class VideoManagerApp extends JFrame  {
             	
             	else if(splitedLineToNameAndPath.get(i)[0].equals("databaseName"))
             		databaseName=splitedLineToNameAndPath.get(i)[1];
-            	
-            	
+            	            	
              }
             
         	
@@ -155,7 +140,50 @@ public class VideoManagerApp extends JFrame  {
 
     
     
-    
+    public static void replaceOldResourceAtributesFromFile(String[] resourceAtributes, String resourcesConnectionPath) {
+	    
+		try {
+
+	        BufferedReader resourcesConnectionFile = new BufferedReader(new FileReader(resourcesConnectionPath));
+	        StringBuffer inputBuffer = new StringBuffer();
+	        String resourcesConnectionLine;
+
+	        while ((resourcesConnectionLine = resourcesConnectionFile.readLine()) != null) {
+	            
+	        	String[] splitedResourcesConnectionLine = resourcesConnectionLine.split("#");
+	        	
+	        	if(splitedResourcesConnectionLine[0].equals("artistNamesFilePath")) 
+	        		inputBuffer.append("artistNamesFilePath#"+resourceAtributes[0]+"\n");
+	        	
+	        	else if(splitedResourcesConnectionLine[0].equals("databaseFeederFilePath")) 
+	        		inputBuffer.append("databaseFeederFilePath#"+resourceAtributes[1]+"\n");
+	        	
+	        	else if(splitedResourcesConnectionLine[0].equals("videoReceiverFolderPath")) 
+	        		inputBuffer.append("videoReceiverFolderPath#"+resourceAtributes[2]+"\n");
+	        	
+	        	else if(splitedResourcesConnectionLine[0].equals("searchTagsPath")) 
+	        		inputBuffer.append("searchTagsPath#"+resourceAtributes[3]+"\n");
+	        	
+	        	else if(splitedResourcesConnectionLine[0].equals("searchTagsPath")) 
+	        		inputBuffer.append("databaseStructureFilePath#"+resourceAtributes[4]+"\n");
+	        	
+	        	else 
+	        		inputBuffer.append(resourcesConnectionLine+"\n"); //to afineis opos einai
+
+	            
+	        }
+	        resourcesConnectionFile.close();
+
+	        // write the new string with the replaced line OVER the same file
+	        FileOutputStream fileOut = new FileOutputStream(resourcesConnectionPath);
+	        fileOut.write(inputBuffer.toString().getBytes());
+	        fileOut.close();
+
+	    } catch (Exception e) {
+	        System.out.println("[resourcesAtributes]Problem replacing resourcesConnectionfile line.");
+	    }
+	    
+	}
     
     
     
@@ -166,16 +194,16 @@ public class VideoManagerApp extends JFrame  {
     public static boolean isResourcesAtributesInputCorrect() {
     	
     	
-    	String artistNamesFilePath=VideoManagerApp.artistNamesFilePath;
-        String databaseFeederFilePath=VideoManagerApp.databaseFeederFilePath;
-        String searchTagsFilePath=VideoManagerApp.searchTagsFilePath;
-        String videoReceiverFolderPath=VideoManagerApp.videoReceiverFolderPath;
+    	String artistNamesFilePath=VideoManagerAppMain.artistNamesFilePath;
+        String databaseFeederFilePath=VideoManagerAppMain.databaseFeederFilePath;
+        String searchTagsFilePath=VideoManagerAppMain.searchTagsFilePath;
+        String videoReceiverFolderPath=VideoManagerAppMain.videoReceiverFolderPath;
     	
 
-        File artistNamesFile = new File(VideoManagerApp.artistNamesFilePath);
-        File databaseFeederFile = new File(VideoManagerApp.databaseFeederFilePath);
-        File searchTagsFile = new File(VideoManagerApp.searchTagsFilePath);
-        File videoReceiverFolder = new File(VideoManagerApp.videoReceiverFolderPath);
+        File artistNamesFile = new File(VideoManagerAppMain.artistNamesFilePath);
+        File databaseFeederFile = new File(VideoManagerAppMain.databaseFeederFilePath);
+        File searchTagsFile = new File(VideoManagerAppMain.searchTagsFilePath);
+        File videoReceiverFolder = new File(VideoManagerAppMain.videoReceiverFolderPath);
 
         
         
@@ -216,10 +244,10 @@ public class VideoManagerApp extends JFrame  {
 
     public static boolean isDatabaseAtributesInputCorrect() throws SQLException {
     	
-    	String serverName=VideoManagerApp.serverName;
-    	String databaseName=VideoManagerApp.databaseName;
-        String databaseUsername=VideoManagerApp.databaseUsername;
-        String databasePassword=VideoManagerApp.databasePassword;
+    	String serverName=VideoManagerAppMain.serverName;
+    	String databaseName=VideoManagerAppMain.databaseName;
+        String databaseUsername=VideoManagerAppMain.databaseUsername;
+        String databasePassword=VideoManagerAppMain.databasePassword;
         
         DAO.JazzLibraryDAO enstablishConnectionTest = new DAO.JazzLibraryDAO();
         boolean connectionContition =JazzLibraryDAO.enstablishConnectionTest(serverName,databaseName,databaseUsername,databasePassword);
