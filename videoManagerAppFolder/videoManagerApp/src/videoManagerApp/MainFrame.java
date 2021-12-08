@@ -67,7 +67,7 @@ public class MainFrame extends JFrame {
         
 	//anoigo to file kai to kratao anoixto kathos trexei to programa
 	
-	public static List<VideoDatabaseFeeder> videoList = new ArrayList<VideoDatabaseFeeder>();
+	public static List<VideoDatabaseFeeder> videoDataGlobalList = new ArrayList<VideoDatabaseFeeder>();
 	public static ArrayList<String> artistNameList;   
 	public static ArrayList<String> remainingArtistNames;   
 	public int remainingArtistNamesCounter = 0;
@@ -307,7 +307,7 @@ public class MainFrame extends JFrame {
         		video.setVideo_name("???");
         		video.setVideo_duration("???");
         		video.setVideo_id(videoId);
-        		videoList.add(0,video);
+        		videoDataGlobalList.add(0,video);
         		
         		videoLink_Tf.setText("");
         	    extraArtist_Tf.setText("");
@@ -315,7 +315,7 @@ public class MainFrame extends JFrame {
         		
 				try {
 					
-					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
+					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 					
 					tableModel.insertRow(0, video.toObject());
 					
@@ -437,8 +437,14 @@ public class MainFrame extends JFrame {
 					f.createNewFile();
 				}
 				
-				
-				
+				FileWriter fw = new FileWriter(VideoManagerAppMain.databaseFeederFileMASTERPath,true);
+		        BufferedWriter bw = new BufferedWriter(fw);
+		        PrintWriter pw = new PrintWriter(bw);
+		        
+		        for(int i=0;i<videoDataGlobalList.size();i++)
+		        	pw.println(videoDataGlobalList.get(i).toString());
+		        
+		        pw.close();
 				
 			}
 
@@ -648,6 +654,8 @@ public class MainFrame extends JFrame {
         
 	        fileNameInitialisation();
 
+	    	videoDataGlobalList = readDatabaseFeederFileToVideoObjects();
+	        
 	        jTableOfFileDisplayInitialisation();
 	        
 	        artistNameValue_Jl = new JLabel(remainingArtistNames.get(0)); 
@@ -771,10 +779,9 @@ public class MainFrame extends JFrame {
     	
         String[] columnNames= {"artist name" , "instrument", "video link", "video name", "video duration","video type","video ID","",""};
     	
-    	videoList = readDatabaseFeederFileToVideoObjects();
-    	String[][] videoData = new String[videoList.size()][];
-    	for(int i=0;i<videoList.size();i++) 
-    		videoData[i]=videoList.get(i).toStringArray();
+    	String[][] videoData = new String[videoDataGlobalList.size()][];
+    	for(int i=0;i<videoDataGlobalList.size();i++) 
+    		videoData[i]=videoDataGlobalList.get(i).toStringArray();
     	
     	tableModel = new MyDefaultTableModel(videoData,columnNames);
         databaseFeedingFile_jT=new JTable(tableModel);
@@ -788,13 +795,13 @@ public class MainFrame extends JFrame {
                 int modelRow = Integer.valueOf( e.getActionCommand() );
                 VideoDatabaseFeeder updatedVideo = ((MyDefaultTableModel)table.getModel()).getVideoAtRow(modelRow);
 
-                videoList.remove(modelRow);
-                videoList.add(modelRow,updatedVideo); //bazei to video sthn thesh , pou patithike to koubi
+                videoDataGlobalList.remove(modelRow);
+                videoDataGlobalList.add(modelRow,updatedVideo); //bazei to video sthn thesh , pou patithike to koubi
 
                 
                 try {
                 	
-					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
+					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -810,7 +817,7 @@ public class MainFrame extends JFrame {
                 int modelRow = Integer.valueOf( e.getActionCommand() );
                 ((DefaultTableModel)table.getModel()).removeRow(modelRow);
                 
-                videoList.remove(modelRow);
+                videoDataGlobalList.remove(modelRow);
                 
                 
                 
@@ -818,7 +825,7 @@ public class MainFrame extends JFrame {
                 
                 try {
                 	
-					writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFilePath);
+					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
