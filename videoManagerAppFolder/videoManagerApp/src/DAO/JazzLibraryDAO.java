@@ -643,17 +643,19 @@ public class JazzLibraryDAO {
     
     
     
-    public static int createVideo(String video_name,String video_duration,int duration_id,String video_path,int type_id,String location_id,Connection con) {  
+    public static int createVideo(String video_name,String video_duration,int duration_id,String video_path,int type_id,String location_id,String video_availability,Connection con) {  
         
         int status = 0;
         try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO video (video_name,video_duration,duration_id,video_path,type_id,location_id) VALUES (?,?,?,?,?,?);");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO video (video_name,video_duration,duration_id,video_path,type_id,location_id,video_availability) VALUES (?,?,?,?,?,?,?);");
             ps.setString(1,video_name); 
             ps.setString(2,video_duration); 
             ps.setInt(3,duration_id); 
             ps.setString(4,video_path); 
             ps.setInt(5,type_id); 
             ps.setString(6,location_id); 
+            ps.setString(7,video_availability); 
+
             
             status=ps.executeUpdate();                
         } catch (SQLException ex) {            

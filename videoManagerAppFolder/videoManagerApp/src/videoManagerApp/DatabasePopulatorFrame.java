@@ -93,14 +93,14 @@ public class DatabasePopulatorFrame extends JFrame {
 	    	        }
 	    	
 	    	
-	    	videoDownloadProgreessOutput.append("Loading... (step 0/4 )...  (Load Databasre Structure)"+"\n");
+	    	videoDownloadProgreessOutput.append("Loading... (step 0/4 )...  (Load Databasre Structure)"+"\n");   System.out.println(1);
 	    	String databaseStructureSqlFile = databaseStructureFileToString();
 	    	DAO.JazzLibraryDAO.dropDatabaseTablesAndCreateNew(databaseStructureSqlFile, conn);
 	    	
-	    	videoDownloadProgreessOutput.append("Loading... (step 1/4 )...  (Reading Artists)"+"\n");
+	    	videoDownloadProgreessOutput.append("Loading... (step 1/4 )...  (Reading Artists)"+"\n");  System.out.println(2);
 			List<Artist> artists=artistAtributesColector();
 
-			videoDownloadProgreessOutput.append("Loading... (step 1.5/4 )...  (uploading Artists Into DataBaseTable)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 1.5/4 )...  (uploading Artists Into DataBaseTable)"+"\n");  System.out.println(3);
 			for(int i=0;i<artists.size();i++)
 				DAO.JazzLibraryDAO.createArtist(
 						artists.get(i).getArtist_name(),
@@ -112,11 +112,11 @@ public class DatabasePopulatorFrame extends JFrame {
 			
 			
 			
-			videoDownloadProgreessOutput.append("Loading... (step 2/4 )...  (Reading Videos)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 2/4 )...  (Reading Videos)"+"\n");    System.out.println(4);
 			List<Video> videos=videoAtributesColector();
 			
 			
-			videoDownloadProgreessOutput.append("Loading... (step 2.5/4 )...  (uploading Videos Into DataBaseTable)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 2.5/4 )...  (uploading Videos Into DataBaseTable)"+"\n");    System.out.println(5);
 			for(int i=0;i<videos.size();i++) {
 				//den tou aresei pou tou bazo apo to class .. kati den katalavainei
 				DAO.JazzLibraryDAO.createVideo(
@@ -126,16 +126,18 @@ public class DatabasePopulatorFrame extends JFrame {
 						videos.get(i).getVideo_path(),
 						videos.get(i).getType_id(),
 						videos.get(i).getLocation_id(),
+						videos.get(i).getVideo_availability(),
+
 						conn 
 						);
 			}
 
 			
-			videoDownloadProgreessOutput.append("Loading... (step 3/4 )...  (Reading Videos & Artists)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 3/4 )...  (Reading Videos & Artists)"+"\n");  System.out.println(6);
 			List<VideoContainsArtist> videoContainsArtist=videoContainsArtistColector();
 			
 
-			videoDownloadProgreessOutput.append("Loading... (step 3.5/4 )...  (uploading Videos & Artist Relations Into DataBaseTable)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 3.5/4 )...  (uploading Videos & Artist Relations Into DataBaseTable)"+"\n");    System.out.println(7);
 			for(int i=0;i<videoContainsArtist.size();i++)
 				DAO.JazzLibraryDAO.createVideoContainsArtist(
 						videoContainsArtist.get(i).getVideo_id(),
@@ -144,9 +146,9 @@ public class DatabasePopulatorFrame extends JFrame {
 						);        	
 			
 			
-			videoDownloadProgreessOutput.append("Loading... (step 4/? )...  (Reading Videos & Artists)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 4/? )...  (Reading Videos & Artists)"+"\n");   System.out.println(8);
 			List<SplashScreenQuotes > splashScreenQuotes =SplashScreenQuotesColector();
-			videoDownloadProgreessOutput.append("Loading... (step 4.5/? )...  (uploading quotes)"+"\n");
+			videoDownloadProgreessOutput.append("Loading... (step 4.5/? )...  (uploading quotes)"+"\n");   System.out.println(9);
 			for(int i=0;i<splashScreenQuotes.size();i++)
 				DAO.JazzLibraryDAO.createSplashScreenQuote(
 						splashScreenQuotes.get(i).getQuote_text(),
@@ -415,6 +417,9 @@ public class DatabasePopulatorFrame extends JFrame {
 	    	int videoTypeId=getVideoTypeId(videoLine);
 
 	    	String videoLocationId=getVideoLocationId(videoLine);
+	    	
+	    	String videoAvailability=getVideoAvailability(videoLine);
+
 			
 
 	    	
@@ -427,10 +432,23 @@ public class DatabasePopulatorFrame extends JFrame {
 	    	video.setVideo_duration(videoDurationName);
 	        video.setType_id(videoTypeId);
 	        video.setLocation_id(videoLocationId);
+	        video.setVideo_availability(videoAvailability);
+
 			
 	        
 			return video;
 		}	
+	
+	public static String getVideoAvailability(String videoLine){
+		//videoLine form :nikos sar@ kiriakos sar@ gianis kokor# piano# videolink# videoName# videoDuration#videoType# videoID
+			String[] splitContentLine=videoLine.trim().split("#");
+			
+			String videoAvailability = splitContentLine[7];
+			
+			return videoAvailability;
+			
+		}
+	
 	
 	public static String getVideoPath(String videoLine){
 		//videoLine form :nikos sar@ kiriakos sar@ gianis kokor# piano# videolink# videoName# videoDuration#videoType# videoID

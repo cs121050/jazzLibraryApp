@@ -10,6 +10,8 @@ public class Video {
     private String video_path;
     private int type_id;
     private String location_id;
+    private String video_availability;
+
 
     public int getVideo_id() {
         return video_id;
@@ -66,4 +68,13 @@ public class Video {
 	public void setType_id(int type_id) {
 		this.type_id = type_id;
 	}
+
+	public String getVideo_availability() {
+		return video_availability;
+	}
+
+	public void setVideo_availability(String video_availability) {
+		this.video_availability = video_availability;
+	}
+
 }
