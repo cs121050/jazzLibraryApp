@@ -9,6 +9,8 @@ public class VideoDatabaseFeeder {
     private String video_duration;
     private String video_type;
     private String video_id;
+    private String video_availability;
+
 	
     public String getArtist_name() {
 		return artist_name;
@@ -52,17 +54,25 @@ public class VideoDatabaseFeeder {
 	public void setVideo_id(String video_id) {
 		this.video_id = video_id;
 	}
-
+	public String getVideo_availability() {
+		return video_availability;
+	}
+	public void setVideo_availability(String video_availability) {
+		this.video_availability = video_availability;
+	}
+	
+	
+	
 
 	public String[] toStringArray() {
 		
-		String[] toStringArray={artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,"save","delete"};
+		String[] toStringArray={artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,video_availability,"browse","save","delete"};
 		return  toStringArray;
 	}
 	
 	public Object[] toObject() {
 
-		Object[] toObject = new Object[] {artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,"save","delete"};
+		Object[] toObject = new Object[] {artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,video_availability,"browse","save","delete"};
 		
 		return  toObject;
 		
@@ -71,10 +81,11 @@ public class VideoDatabaseFeeder {
 	
 	public String toString() {
 
-		String toString=artist_name+"#"+artist_instrument+"#"+video_link+"#"+video_name+"#"+video_duration+"#"+video_type+"#"+video_id;
+		String toString=artist_name+"#"+artist_instrument+"#"+video_link+"#"+video_name+"#"+video_duration+"#"+video_type+"#"+video_id+"#"+video_availability;
 		return  toString;
 		
 	}
+	
 	
 	
 }

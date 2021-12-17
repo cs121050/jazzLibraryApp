@@ -30,11 +30,12 @@ public class changeNamesDurationToVoid {
     public static void main(String[] args) throws Exception{
 
     		
-    	List<VideoDatabaseFeeder> feedingFileLines =renaming();
-    	writeVideoArrayListToFile(feedingFileLines,"C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses\\databaseFeederFile.txt");
+    	//List<VideoDatabaseFeeder> feedingFileLines =renaming();
+    	//writeVideoArrayListToFile(feedingFileLines,"C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses\\databaseFeederFile.txt");
     	
     	//youtubeVideoInfoDownloader();
-    	List<VideoDatabaseFeeder> feedingFileLinesWithNames =videoDataBaseFeedingFilleNameDurationGiver();
+    	List<VideoDatabaseFeeder> feedingFileLinesWithNames =videoDataBaseFeedingFilleNameDurationAvailabilityGiver();
+    	//List<VideoDatabaseFeeder> deleteUnavalableVideosFromList =deleteUnavalableVideosFromList();
     	//feedingFileLinesWithNames=videoDataBaseFeedingFilleNameDurationGiver_leftovers(feedingFileLinesWithNames);
     	writeVideoArrayListToFile(feedingFileLinesWithNames,"C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses\\databaseFeederFile.txt");
     	
@@ -42,6 +43,52 @@ public class changeNamesDurationToVoid {
     	
     	
     }
+    
+    
+    
+    
+    private static List<VideoDatabaseFeeder> deleteUnavalableVideosFromList() throws Exception {
+
+		ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = fromVideoDatabaseFeedingFileToArrayList();
+
+    	for(int i=0;i<videoDatabaseFeederList.size();i++){
+            if(videoDatabaseFeederList.get(i).getVideo_availability().equals("0"))
+            	videoDatabaseFeederList.remove(i);
+            
+        }
+
+        return videoDatabaseFeederList;
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -87,7 +134,8 @@ public class changeNamesDurationToVoid {
         String feederLine=feeder_Br.readLine();
         while(feederLine != null){
         	
-    		String[] splitFeederLine=feederLine.trim().split("#");
+        	String[] splitFeederLine=new String[8];
+    		splitFeederLine=feederLine.trim().split("#");
     		
     		String[] splitLink=splitFeederLine[2].trim().split("&t=");
     		String linkWithoutSeconds=splitLink[0];
@@ -101,6 +149,8 @@ public class changeNamesDurationToVoid {
     		videoDatabaseFeeder.setVideo_duration("???");
     		videoDatabaseFeeder.setVideo_type(splitFeederLine[5]);
     		videoDatabaseFeeder.setVideo_id(splitFeederLine[6].replace("&t",""));
+    		videoDatabaseFeeder.setVideo_availability("0");
+
     		
     		feederList.add(videoDatabaseFeeder);
 
@@ -130,7 +180,7 @@ public class changeNamesDurationToVoid {
 	}
     
     
-    private static ArrayList<VideoDatabaseFeeder> videoDataBaseFeedingFilleNameDurationGiver() throws Exception {
+    private static ArrayList<VideoDatabaseFeeder> videoDataBaseFeedingFilleNameDurationAvailabilityGiver() throws Exception {
     	
     	int counter=0;
     		
@@ -141,16 +191,21 @@ public class changeNamesDurationToVoid {
 
         	counter++;
         	
-            File videoInfoJsonFile = new File("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoRecivingFolder\\"+videoDatabaseFeederList.get(i).getVideo_id()+".info.json");           
-            if( (videoDatabaseFeederList.get(i).getVideo_name().equals("???") 
-            		|| videoDatabaseFeederList.get(i).getVideo_duration().equals("???")
-            			) && videoInfoJsonFile.exists() )  {
+            File videoInfoJsonFile = new File("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoRecivingFolder\\"+videoDatabaseFeederList.get(i).getVideo_id()+".info.json");      
+            
+            if(videoDatabaseFeederList.get(i).getVideo_availability().equals("0")){
+	            videoDatabaseFeederList.remove(i); i--;
+            }
+            
+            
+            /* if(videoInfoJsonFile.exists())  {
                 
             	
             	String videpJsonInfoString = readFileAsString("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\videoRecivingFolder"+"\\"+videoDatabaseFeederList.get(i).getVideo_id()+".info.json");            	
             	String[] spitedVideoInfoJsonString1 = videpJsonInfoString.split("\"title\": ");
             	String[] isolateVideoTitleValueString = spitedVideoInfoJsonString1[1].split(",");
-                String videoTitleValue = isolateVideoTitleValueString[0].replaceAll("\"", "");
+                String videoTitleValue = isolateVideoTitleValueString[0].replaceAll("\"", "").replaceAll("#","n.").replaceAll("}", "");
+
 
                 String[] spitedVideoInfoJsonString2 = videpJsonInfoString.split("\"duration\": ");
             	String durationValue="0";
@@ -174,13 +229,20 @@ public class changeNamesDurationToVoid {
 	
 
             	}
+            	
+            	
+            	
                 System.out.println(durationNumericForm);
-                videoDatabaseFeederList.get(i).setVideo_name(videoTitleValue.replace("#","n."));
+                videoDatabaseFeederList.get(i).setVideo_name(videoTitleValue);
                 videoDatabaseFeederList.get(i).setVideo_duration(String.valueOf(durationNumericForm));
+                videoDatabaseFeederList.get(i).setVideo_availability("1");
             }
-           
-
+            
+            */
+            
+            
         }
+        
 
         return videoDatabaseFeederList;
 	}
@@ -191,7 +253,7 @@ public class changeNamesDurationToVoid {
 			
 			
 			
-		FileReader databaseFeederFR=new FileReader("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses\\databaseFeederFile.txt");
+		FileReader databaseFeederFR=new FileReader("C:\\Users\\n.sarantopoulos\\Desktop\\jazzLibraryApp\\videoManagerAppFolder\\text_resorses\\databaseFeederFileMASTER.txt");
 	    BufferedReader databaseFeederBR = new BufferedReader(databaseFeederFR);
 	    
 		ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = new ArrayList<VideoDatabaseFeeder>();
@@ -213,6 +275,8 @@ public class changeNamesDurationToVoid {
 	    	videoDatabaseFeeder.setVideo_duration(splitedVideoLine[4]);
 	    	videoDatabaseFeeder.setVideo_type(splitedVideoLine[5]);
 	    	videoDatabaseFeeder.setVideo_id(splitedVideoLine[6]);
+	    	videoDatabaseFeeder.setVideo_availability(splitedVideoLine[7]);
+
 	        	
 	
 	    	videoDatabaseFeederList.add(videoDatabaseFeeder);

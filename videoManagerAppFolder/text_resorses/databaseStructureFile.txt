@@ -34,6 +34,7 @@ CREATE TABLE Video (
     video_path varchar(255) NOT NULL ,
     type_id int  ,
     location_id varchar(255) NOT NULL ,
+    video_availability varchar(255) NOT NULL ,
 
     CONSTRAINT fk_duration_id
         FOREIGN KEY (duration_id) REFERENCES Duration (duration_id),

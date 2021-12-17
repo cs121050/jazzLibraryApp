@@ -5,6 +5,7 @@ searchTagsPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_res
 databaseStructureFilePath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseStructureFile.txt
 databaseFeederFileMASTERPath#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\databaseFeederFileMASTER.txt
 splashScreenQuotes#C:\Users\me\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\splashScreenQuotes.txt
+videoPhysicalFormFolderPath#F:\jazzLibrary\videoPhysicalFormFolder
 serverName#XM
 databaseName#jazzLibraryDB		
 databaseUsername#sa

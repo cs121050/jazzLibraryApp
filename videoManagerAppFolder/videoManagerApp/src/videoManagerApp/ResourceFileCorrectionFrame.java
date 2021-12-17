@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import JazzLibraryClassies.VideoDatabaseFeeder;
@@ -37,6 +39,8 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	
     private JCheckBox artistNameFileCorrection_Cb;
     private JCheckBox videoDBFeederFileCorrection_Cb;
+    private JCheckBox refreshVideoAvailability_Cb;
+
 
     private JButton correction_Btn;
 
@@ -49,6 +53,8 @@ public class ResourceFileCorrectionFrame extends JFrame {
 
        artistNameFileCorrection_Cb = new JCheckBox("Artist Name File Correction");
        videoDBFeederFileCorrection_Cb = new JCheckBox("Video DB Feeder File Correction");
+       refreshVideoAvailability_Cb = new JCheckBox("Refresh Video Availability Parameter");
+
 
        correction_Btn = new JButton("FileCorrection");
 
@@ -66,6 +72,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
     	
         chooseFileCorrectionPanel.add(artistNameFileCorrection_Cb);
         chooseFileCorrectionPanel.add(videoDBFeederFileCorrection_Cb);
+        chooseFileCorrectionPanel.add(refreshVideoAvailability_Cb);
         
         chooseFileCorrectionPanel.add(correction_Btn);
         chooseFileCorrectionPanel.add(resourceFileCorrectionWarning_Lb);
@@ -75,7 +82,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
     	
         
         
-        this.setSize(340, 120);
+        this.setSize(380, 120);
         this.setLocationRelativeTo(null);
         this.setTitle("Resource File Correction");
         this.setVisible(true);
@@ -90,16 +97,16 @@ public class ResourceFileCorrectionFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	try {
 	            	if(artistNameFileCorrection_Cb.isSelected()) {
-	            		
-						artistNameFileCorrection();
+						artistNameFileCorrection(); 
 	            	}
-	            	else if(videoDBFeederFileCorrection_Cb.isSelected()) {
+	            	if(videoDBFeederFileCorrection_Cb.isSelected()) {
 	            		videoDBFeedingFileCorrection();
 	            	}
-	            	else if(artistNameFileCorrection_Cb.isSelected() && videoDBFeederFileCorrection_Cb.isSelected()) {
-	            		artistNameFileCorrection();
-	            		videoDBFeedingFileCorrection();
+	            	if(refreshVideoAvailability_Cb.isSelected()) {
+	            		refreshVideoAvailability();
 	            	}
+	            	
+	            	
 	            	setInvisible();
 	            	
             	} catch (IOException e1) {
@@ -127,6 +134,57 @@ public class ResourceFileCorrectionFrame extends JFrame {
    
     }
 
+    
+    
+    
+    
+    
+    private void refreshVideoAvailability() throws IOException {
+
+    	
+    	do{
+    		int n = JOptionPane.showOptionDialog(new JFrame(),
+	    			"this might take some hours , would you like to continue?", "Coded Message",
+	    			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
+	    	        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
+	    	        if (n == JOptionPane.NO_OPTION) {
+	    	            this.setVisible(false);
+	    	            break;
+	    	        } else if (n == JOptionPane.CLOSED_OPTION) {
+	    	            this.setVisible(false);
+	    	            break;
+	    	        }
+	    	
+	    	VideoDownloaderFrame.youtubeVideoInfoDownloader();
+    	
+	    	
+	    	checkingWhichFilesHasInfoFileAndRefefresh(); 
+	    	
+
+	    	VideoDownloaderFrame.cleanFolderOfJSONFiles(VideoManagerAppMain.videoReceiverFolderPath);
+
+    	
+    	}while(false);
+    	
+
+	}
+    
+    
+    public void checkingWhichFilesHasInfoFileAndRefefresh() {
+    	
+		for(int i=0;i<MainFrame.videoDataGlobalList.size();i++) {
+    		File videoInfoFile = new File(VideoManagerAppMain.videoReceiverFolderPath+"\\"+MainFrame.videoDataGlobalList.get(i).getVideo_id()+".info.jason");
+    		if(videoInfoFile.exists())
+    			MainFrame.videoDataGlobalList.get(i).setVideo_availability("1");
+		}
+    	
+    }
+    
+    
+    
+    
+    
+    
     
     
     
@@ -188,6 +246,8 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	        	videoDatabaseFeeder.setVideo_duration(splitedVideoLine[4]);
 	        	videoDatabaseFeeder.setVideo_type(splitedVideoLine[5]);
 	        	videoDatabaseFeeder.setVideo_id(splitedVideoLine[6]);
+	        	videoDatabaseFeeder.setVideo_availability(splitedVideoLine[7]);
+
 		        	
 	        	
 		        if(videoDatabaseFeeder.getVideo_link().contains("watch?v=")) {

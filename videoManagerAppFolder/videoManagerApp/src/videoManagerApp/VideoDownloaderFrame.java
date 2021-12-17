@@ -72,29 +72,34 @@ public class VideoDownloaderFrame extends JFrame {
 		    	warningMessage_Lb.setText("Do Not Turn Off Until Finish.. .");
 		    	warningMessage_Lb.setForeground(Color.red);
 		    	
+		    	do{
 
-		    	int n = JOptionPane.showOptionDialog(new JFrame(),
-		    			"Video Downloading is Starting ,it might take over 10 hours \n(depending of your internet connection) so be patient ,\n if you close it next time it will continue where it stoped", "Coded Message",
-		    			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
-		    	        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
-		    	        if (n == JOptionPane.NO_OPTION) {
-		    	            this.setVisible(false);
-		    	        } else if (n == JOptionPane.CLOSED_OPTION) {
-		    	            this.setVisible(false);
-		    	        }
-		    	
-		    	
-		    	
-		    	videoDownloadProgreessOutput.append("~Video Downloading~  (1/2)"+"\n");
-		    	youtubeVideoDownloader();  
-
-
-		    	videoDownloadProgreessOutput.append("~Video Namegiving~  (2/2)"+"\n");
-				ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder = videoDataBaseFeedingFilleNameDurationGiver();
-				writeVideoArrayListToFile(updatedVideoDatabaseFeeder,VideoManagerAppMain.databaseFeederFilePath);
-
-
-		    	videoDownloadProgreessOutput.append("~Downloading Complited Successfully"+"\n");
+		    		int n = JOptionPane.showOptionDialog(new JFrame(),
+			    			"Video Downloading is Starting ,it might take over 10 hours \n(depending of your internet connection) so be patient ,\n if you close it next time it will continue where it stoped", "Coded Message",
+			    			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
+			    	        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
+			    	        if (n == JOptionPane.NO_OPTION) {
+			    	            this.setVisible(false);
+			    	            break;
+			    	        } else if (n == JOptionPane.CLOSED_OPTION) {
+			    	            this.setVisible(false);
+			    	            break;
+			    	        }
+			    	
+			    	
+			    	
+			    	videoDownloadProgreessOutput.append("~Video Downloading~  (1/2)"+"\n");
+			    	youtubeVideoDownloader();  
+	
+	
+			    	videoDownloadProgreessOutput.append("~Video Namegiving~  (2/2)"+"\n");
+					ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder = videoDataBaseFeedingFilleNameDurationAvailabilityGiver();
+					writeVideoArrayListToFile(updatedVideoDatabaseFeeder,VideoManagerAppMain.databaseFeederFilePath);
+	
+	
+			    	videoDownloadProgreessOutput.append("~Downloading Complited Successfully"+"\n");
+			    	
+		    	}while(false);
 		    	
 		        this.setVisible(false);
 		    }
@@ -141,7 +146,7 @@ public class VideoDownloaderFrame extends JFrame {
     
     
     
-    private ArrayList<VideoDatabaseFeeder> videoDataBaseFeedingFilleNameDurationGiver() throws Exception {
+    private ArrayList<VideoDatabaseFeeder> videoDataBaseFeedingFilleNameDurationAvailabilityGiver() throws Exception {
 	
     	int counter=0;
     		
@@ -158,6 +163,7 @@ public class VideoDownloaderFrame extends JFrame {
             		|| videoDatabaseFeederList.get(i).getVideo_duration().equals("???")
             			) && videoInfoJsonFile.exists() )  {
                 
+            	videoDatabaseFeederList.get(i).setVideo_availability("1");
             	
             	String videpJsonInfoString = readFileAsString(VideoManagerAppMain.videoReceiverFolderPath+"\\"+videoDatabaseFeederList.get(i).getVideo_id()+".info.json");            	
             	String[] spitedVideoInfoJsonString1 = videpJsonInfoString.split("\"title\": ");
@@ -190,12 +196,33 @@ public class VideoDownloaderFrame extends JFrame {
                 videoDatabaseFeederList.get(i).setVideo_name(videoTitleValue.replace("#","n."));
                 videoDatabaseFeederList.get(i).setVideo_duration(String.valueOf(durationNumericForm));
             }
+            else {
+            	
+            	videoDatabaseFeederList.remove(i); //an to video den einai avalable delete it
+            }
            
 
         }
 
+        
+        cleanFolderOfJSONFiles(VideoManagerAppMain.videoReceiverFolderPath);
+        
+        
         return videoDatabaseFeederList;
 	}
+    
+    
+    public static void cleanFolderOfJSONFiles(String folderPath)
+	{
+        File folder = new File(folderPath);
+    	
+	    for (final File fileEntry : folder.listFiles()) 
+	        if (fileEntry.getName().endsWith(".json")) {
+	            File thisJSONFile = new File(folder.getAbsolutePath()+"\\"+fileEntry.getName());
+	            thisJSONFile.delete();
+	    }
+	}
+    
     
     
     
@@ -250,6 +277,44 @@ public class VideoDownloaderFrame extends JFrame {
     }
 
     
+    
+	static void youtubeVideoInfoDownloader() throws IOException {
+		
+		int counter=0;
+		
+		
+		ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = (ArrayList<VideoDatabaseFeeder>) MainFrame.videoDataGlobalList;
+	
+		int i=0;
+		while(i<videoDatabaseFeederList.size() ) {
+	    	
+	        
+	    	String videoURL=videoDatabaseFeederList.get(i).getVideo_link().replaceAll("\\s+","_");
+	
+	            try {
+	            	Process proc =proc = Runtime.getRuntime().exec("cmd");
+	                new Thread(new SyncPipe(proc.getErrorStream(), System.err)).start();
+	                new Thread(new SyncPipe(proc.getInputStream(), System.out)).start();
+	                
+	                OutputStream outputStream = proc.getOutputStream();
+	                PrintWriter outputStreamWriter = new PrintWriter(outputStream);     
+	                
+	                outputStreamWriter.println(VideoManagerAppMain.videoReceiverFolderPath+"\\"+"youtube-dl -o %(id)s.mp4 --write-info-json --skip-download "+videoURL);  
+	
+	
+	                outputStreamWriter.close();  
+	                
+	                proc.waitFor();    
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	            
+	            
+	            
+	    	i++;
+	    }
+	    
+	}
     
     
     

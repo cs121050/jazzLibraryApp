@@ -79,14 +79,17 @@ public class DatabasePopulatorFrame extends JFrame {
 	    	warningMessage_Lb.setText("Do Not Turn Off Until Finish.. .");
 	    	warningMessage_Lb.setForeground(Color.red);
 	    	
-
+	    	do{
+	    		
 	    	int n = JOptionPane.showOptionDialog(new JFrame(), "Database Population is Starting ,it might take over 10 minutes \n(depending of your internet connection) so be patient ", "Coded Message"
 	    			, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
 	    	        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
 	    	        if (n == JOptionPane.NO_OPTION) {
 	    	            this.setVisible(false);
+	    	            break;
 	    	        } else if (n == JOptionPane.CLOSED_OPTION) {
 	    	            this.setVisible(false);
+	    	            break;
 	    	        }
 	    	
 	    	
@@ -155,12 +158,12 @@ public class DatabasePopulatorFrame extends JFrame {
 			
 			videoDownloadProgreessOutput.append("COMPLETE"+"\n");
 	    	
+	    	}while(false);
 
 			
 			
 	    	conn.close();
-	    	
-	        this.setVisible(false);
+	    	this.setVisible(false);
 	    }
 	    else { 
 	    	

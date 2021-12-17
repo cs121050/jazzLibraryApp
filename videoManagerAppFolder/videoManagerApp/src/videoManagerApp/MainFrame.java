@@ -307,6 +307,7 @@ public class MainFrame extends JFrame {
         		video.setVideo_name("???");
         		video.setVideo_duration("???");
         		video.setVideo_id(videoId);
+        		video.setVideo_availability("0");
         		videoDataGlobalList.add(0,video);
         		
         		videoLink_Tf.setText("");
@@ -368,7 +369,7 @@ public class MainFrame extends JFrame {
 
                 artistNameValue_Jl.setText(remainingArtistNames.get(remainingArtistNamesCounter));
             	
-            	loadSearchResultsToBrowser();
+                artistBrowserSearchResults();
    
             }
         });
@@ -672,53 +673,59 @@ public class MainFrame extends JFrame {
 
 	
 	
-	private void loadSearchResultsToBrowser() {
+	private void artistBrowserSearchResults() {
 
-		Desktop desktop;
-		Runtime runtime;
+		
 		
 		String url = "https://www.youtube.com/results?search_query=";
 
 		String[] splitedArtistName=remainingArtistNames.get(remainingArtistNamesCounter).split(" ");
 
-		System.out.println();
 		
 		
 		for(int i=0 ;i<splitedArtistName.length;i++)
             url = url +"+"+ splitedArtistName[i];
 
         
-		for(int i=0 ;i<searchTags.size();i++){
-            
+		for(int i=0 ;i<searchTags.size();i++)    
+			browserURL(url+"+"+ searchTags.get(i));
 
-
-            if(Desktop.isDesktopSupported()){
-                desktop = Desktop.getDesktop();
-                try {
-                    desktop.browse(new URI(url+"+"+ searchTags.get(i)));
-                }catch (IOException | URISyntaxException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            else{
-                runtime = Runtime.getRuntime();
-                try {
-                    runtime.exec("xdg-open " + url);
-                }catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-        }
 		
 		
 		remainingArtistNamesCounter++;
-		
-		
 	}
 
+	
+	
+	private static void browserURL(String uriString) {
+		
+		Desktop desktop;
+		Runtime runtime;
+		
+		if(Desktop.isDesktopSupported()){
+            desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(uriString));
+            }catch (IOException | URISyntaxException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else{
+            runtime = Runtime.getRuntime();
+            try {
+                runtime.exec("xdg-open " + uriString);
+            }catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+    }
+	
+	
+	
+	
     
     private void artistAutoCompleteJTextFieldExtra() {
 		
@@ -777,7 +784,7 @@ public class MainFrame extends JFrame {
     
     static void jTableOfFileDisplayInitialisation() throws IOException {
     	
-        String[] columnNames= {"artist name" , "instrument", "video link", "video name", "video duration","video type","video ID","",""};
+        String[] columnNames= {"artist name" , "instrument", "video link", "video name", "video duration","video type","video ID","video availability","","",""};
     	
     	String[][] videoData = new String[videoDataGlobalList.size()][];
     	for(int i=0;i<videoDataGlobalList.size();i++) 
@@ -786,6 +793,22 @@ public class MainFrame extends JFrame {
     	tableModel = new MyDefaultTableModel(videoData,columnNames);
         databaseFeedingFile_jT=new JTable(tableModel);
 
+        
+        
+        AbstractAction browse = new AbstractAction()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                JTable table = (JTable)e.getSource();
+                int modelRow = Integer.valueOf( e.getActionCommand() );
+                
+                String thisVideoLink = videoDataGlobalList.get(modelRow).getVideo_link();
+                
+    			browserURL(thisVideoLink);
+
+
+            }
+        };
         
         AbstractAction save = new AbstractAction()
         {
@@ -832,20 +855,20 @@ public class MainFrame extends JFrame {
 				}
             }
         };
-        
+
       
         
+        
+        ButtonColumn browseButtonColumn = new ButtonColumn(databaseFeedingFile_jT, browse, 8);
+        browseButtonColumn.setMnemonic(KeyEvent.VK_D);
 
         
-        ButtonColumn saveButtonColumn = new ButtonColumn(databaseFeedingFile_jT, save, 7);
+        ButtonColumn saveButtonColumn = new ButtonColumn(databaseFeedingFile_jT, save, 9);
         saveButtonColumn.setMnemonic(KeyEvent.VK_D);
         
-       
         
-        ButtonColumn deleteButtonColumn = new ButtonColumn(databaseFeedingFile_jT, delete, 8);
+        ButtonColumn deleteButtonColumn = new ButtonColumn(databaseFeedingFile_jT, delete, 10);
         deleteButtonColumn.setMnemonic(KeyEvent.VK_D);
-        
-        
         
     }
     
@@ -963,6 +986,8 @@ public class MainFrame extends JFrame {
     		video.setVideo_duration(splitConnectionsLine[4]);
     		video.setVideo_type(splitConnectionsLine[5]);
     		video.setVideo_id(splitConnectionsLine[6]);
+    		video.setVideo_availability(splitConnectionsLine[7]);
+
     		
     		videoList.add(video);
     		
@@ -999,95 +1024,7 @@ static ArrayList<String> readArtistNamesFileToList() throws IOException {
     }
     
     
-    
-    
-    
-    
-    private void videoDownloader(String downloadFolderPath,String videoUrl){
 
-
-    	
-    	//String[] videoNameAndDuration=null;
-    	
-        String[] splitedLineToWords;
-        
-        String[] command ={"cmd"}; //gia to youtubeDownloader kodika
-        Process p;
-        
-        Scanner keyboard = new Scanner(System.in);
-           
-
-        
-
-                 
-        splitedLineToWords=videoUrl.split(":");// kai etsi na 3ereis poia einai LINKS
-        
-        
-        File f=new File(downloadFolderPath+"\\downloadFolder");
-        if (f.exists() == false )
-            new File(downloadFolderPath+"\\downloadFolder").mkdirs(); 
-
-        
-          
-            videoUrl=videoUrl.replaceAll("\\s+","_");
-           
-            
-            
-            if(splitedLineToWords[0].equals("https") && !splitedLineToWords[1].contains("channel")){
-                try {
-                    p = Runtime.getRuntime().exec(command); 
-                    new Thread(new SyncPipe(p.getErrorStream(), System.err)).start();
-                    new Thread(new SyncPipe(p.getInputStream(), System.out)).start();
-                    PrintWriter stdin = new PrintWriter(p.getOutputStream());                    
-                    
-                    stdin.println("cd "+downloadFolderPath);     //pigene sto directoruy poy einai to youtube-dl 
-                    stdin.println("youtube-dl -f 135 "+videoUrl);  //gia na ginei to download xrisimopio to etoimo programa youtube-dl 
-                    
-                    stdin.println("youtube-dl --get-title "+videoUrl); 
-                    stdin.write(videoUrl);
-                    
-                    System.out.println(p.getInputStream());
-                    
-                    
-                    
-                    
-                    
-                    stdin.close();                                   //kai edo leme pou tha to brei to programa
-                    p.waitFor();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-            
-
-    	//return videoNameAndDuration;
-    }
-    
-    
-    
-    
-    
-    
-    
-
-	
-	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 
