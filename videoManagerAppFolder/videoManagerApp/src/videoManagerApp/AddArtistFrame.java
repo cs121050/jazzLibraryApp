@@ -1,4 +1,3 @@
-
 package videoManagerApp;
 
 import java.awt.BorderLayout;
@@ -32,7 +31,9 @@ import javax.swing.JTextField;
 * @author nick
 */
 public class AddArtistFrame extends JFrame {
-    
+    //frame pou dinei thn dinatotita, na prostheseis amesos ena neo  ArtistName , 
+	//i na prostheseis ena file olokliro ,, me pola nea onomata artis!!
+	
     private JLabel addSingleAtistName_Lb;
     private JLabel addManyArtistNamesLb;
     private JLabel addArtistNameWarning_Lb;

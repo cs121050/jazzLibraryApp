@@ -7,6 +7,6 @@ databaseFeederFileMASTERPath#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\vid
 splashScreenQuotes#C:\Users\n.sarantopoulos\Desktop\jazzLibraryApp\videoManagerAppFolder\text_resorses\splashScreenQuotes.txt
 videoPhysicalFormFolderPath#F:\jazzLibrary\videoPhysicalFormFolder
 serverName#XM
-databaseName#jazzLibraryDB		
+databaseName#jazzLibraryDB
 databaseUsername#sa
 databasePassword#admin

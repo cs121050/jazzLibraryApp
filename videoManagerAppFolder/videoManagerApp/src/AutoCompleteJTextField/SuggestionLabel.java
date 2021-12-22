@@ -12,11 +12,14 @@ import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
-
-
+/**
+*
+* @author nick
+*/
 class SuggestionLabel extends JLabel {
+	//boithitiko function tou AutoSuggestor
 
-    private boolean focused = false;
+	private boolean focused = false;
     private final JWindow autoSuggestionsPopUpWindow;
     private final JTextField textField;
     private final AutoSuggestor autoSuggestor;

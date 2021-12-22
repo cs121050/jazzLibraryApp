@@ -6,9 +6,13 @@ import javax.swing.table.DefaultTableModel;
 
 import JazzLibraryClassies.VideoDatabaseFeeder;
 
-
+/**
+*
+* @author nick
+*/
 public class MyDefaultTableModel extends DefaultTableModel{
-	
+	//kai auto einai to custo JTableModel pou xrisimopoio , gia na  balo ta koumpia pou thelo mesa
+
 	public MyDefaultTableModel(Object[][] data, Object[] columnNames) {
         setDataVector(data, columnNames);
     }

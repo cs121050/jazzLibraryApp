@@ -1,5 +1,8 @@
 package JazzLibraryClassies;
-
+/**
+*
+* @author nick
+*/
 public class VideoContainsArtist {
 
     private int artist_id,video_id;

@@ -1,5 +1,8 @@
 package JazzLibraryClassies;
-
+/**
+*
+* @author nick
+*/
 public class VideoDatabaseFeeder {
 
     private String artist_name;
@@ -63,13 +66,15 @@ public class VideoDatabaseFeeder {
 	
 	
 	
-
+    //output pou thelei to , CustomJTable gia na emfanisei thn string pliroforia sta pedia tou !!
 	public String[] toStringArray() {
 		
 		String[] toStringArray={artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,video_availability,"browse","save","delete"};
 		return  toStringArray;
 	}
 	
+	//pali output , gia na grafei apo class , sto CustomJTable ,, thimizo oti ta teleutea 3 pedia einai ta custom koumpia!! 
+	//o kodikas tous einai sto ButtonColumnTableModel package
 	public Object[] toObject() {
 
 		Object[] toObject = new Object[] {artist_name,artist_instrument,video_link,video_name,video_duration,video_type,video_id,video_availability,"browse","save","delete"};
@@ -78,7 +83,7 @@ public class VideoDatabaseFeeder {
 		
 	}
 	
-	
+	//output  gia na grafei to class , sto arxeio Feeder!!
 	public String toString() {
 
 		String toString=artist_name+"#"+artist_instrument+"#"+video_link+"#"+video_name+"#"+video_duration+"#"+video_type+"#"+video_id+"#"+video_availability;

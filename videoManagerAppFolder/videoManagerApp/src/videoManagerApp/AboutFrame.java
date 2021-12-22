@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package videoManagerApp;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.TextArea;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-
-
-
 
 /**
 *
@@ -22,69 +13,54 @@ import javax.swing.JPanel;
 */
 class AboutFrame  extends JFrame {
     
-	
-    private JLabel conectedToServerCondition_Lb;
-    private JLabel conectedToServerConditionValue_Lb;
+    TextArea textArea = new TextArea("Hello im the developer of the application.\n"
+    							  + " This apps is a jazzLibraryApp maintenance tool\n"
+    							  + "it's purpose is to manage the the following things:\n\n"
+    							  + "1) Automatic search of videos in Youtube through\n"
+    							  + "   web browser (Mozila) ,and registration of new\n"
+    							  + "   videos on local txt Database FeedingFile\n"
+    							  + "2) Database FeedingFile correction mechanisms\n"
+    							  + "3) Automatic DatabasePopulation\n\n"
+    							  + "The Developer Nickos Sarantopoulos ID:121050");    
 
-    private JLabel appVersion_Lb;
-    private JLabel appVersionValue_Lb;
-
-
-    public AboutFrame() {
-       super();
-       
-       conectedToServerCondition_Lb=new JLabel("Conected To Server Condition: ");
-       determineConectionCondition();
-        
-       appVersion_Lb=new JLabel("App Version: ");
-       appVersionValue_Lb=new JLabel("v1");
-       appVersionValue_Lb.setForeground(Color.blue);
-        
-    }
-    
-    
     public void prepareUI() {
 
         
 
-        
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(2, 2));
-        topPanel.add(conectedToServerCondition_Lb);
-        topPanel.add(conectedToServerConditionValue_Lb);
-        topPanel.add(appVersion_Lb);
-        topPanel.add(appVersionValue_Lb);
-        
-        this.add(topPanel, BorderLayout.PAGE_START);
+ 
+        this.add(textArea, BorderLayout.PAGE_START);
 
 
   
                 
-       this.setSize(300, 300);
+       this.setSize(320, 210);
        this.setLocationRelativeTo(null);
        this.setTitle("About The App");
+       this.setResizable(false);
        this.setVisible(true);
-       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-        
-        
+       this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     
-    
-    
-     private void determineConectionCondition() {
+       
+       
+       
+       
+       
+       
+       this.addWindowListener(new WindowAdapter() {
+           @Override                               
+           public void windowClosing(WindowEvent e) {
+           	setInvisible();
+           }
+       });
+   }
 
-    	 if (VideoManagerAppMain.isLogedInToServer == true) {
-    		 conectedToServerConditionValue_Lb=new JLabel("Online!");
-    	     appVersionValue_Lb.setForeground(Color.green);
+    
+   private void setInvisible() {
 
-    	 }
-    	 else {
-    		 conectedToServerConditionValue_Lb=new JLabel("Offline..");
-    	     appVersionValue_Lb.setForeground(Color.red);
-    	 }
-    	 
-     }
-     
+   	this.setVisible(false);
+   }
+
+    
 
 }
     

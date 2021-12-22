@@ -1,4 +1,8 @@
 package JazzLibraryClassies;
+/**
+*
+* @author nick
+*/
 public class Artist {
 
     private int artist_id;

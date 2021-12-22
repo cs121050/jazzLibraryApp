@@ -1,15 +1,19 @@
 package JazzLibraryClassies;
 
-
+/**
+*
+* @author nick
+*/
 public class Video {
+
 
     private int video_id;
     private int duration_id;
     private String video_name;
     private String video_duration;
-    private String video_path;
+    private String video_link;
     private int type_id;
-    private String location_id;
+    private String video_uniqueId;
     private String video_availability;
 
 
@@ -46,19 +50,19 @@ public class Video {
     }
 
     public String getVideo_path() {
-        return video_path;
+        return video_link;
     }
 
     public void setVideo_path(String video_path) {
-        this.video_path = video_path;
+        this.video_link = video_path;
     }
 
 	public String getLocation_id() {
-		return location_id;
+		return video_uniqueId;
 	}
 
 	public void setLocation_id(String location_id) {
-		this.location_id = location_id;
+		this.video_uniqueId = location_id;
 	}
 
 	public int getType_id() {

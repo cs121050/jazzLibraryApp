@@ -11,10 +11,13 @@ import JazzLibraryClassies.*;
 
 
 
-
+/**
+*
+* @author nick
+*/
 public class JazzLibraryDAO {    
     
-	
+	//gia na elenxo an ta credential ths bashs, pou exei eisagei o xrisths einai sosta
 	public static boolean enstablishConnectionTest(String serverName,String databaseName,String username,String password) throws SQLException{
         Connection conn = null; 
 
@@ -31,7 +34,13 @@ public class JazzLibraryDAO {
         return true;
     }
 
-    public static Connection getConnection(String serverName,String databaseName,String username,String password){
+	
+	
+	
+	
+	//otan thelo na kano POPULATE  thn bash , anoigo ena konection ,,, trexo oles tis funtion pou thelo
+	//,, kai otan teleioso ,, kleino to connection
+    public static Connection getConnection(String serverName,String databaseName,String username,String password){ 
         Connection conn = null; 
 
         try {
@@ -220,7 +229,7 @@ public class JazzLibraryDAO {
     }
     
     
-    public static List<Artist> retriveAllArtist(Connection con) {                 //!!!!!!!!!!!!!!!!
+    public static List<Artist> retriveAllArtist(Connection con) { 
 
         List<Artist> list = new ArrayList<>();
         try {
@@ -240,140 +249,19 @@ public class JazzLibraryDAO {
     }
     
     
-    
-    
-                                                                    public static Artist retriveArtist(String artist_name,Connection con) throws InterruptedException { 
-
-                                                                        Artist artist = new Artist();
-                                                                        try {
-                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM Artist WHERE artist_name=?");
-
-                                                                            ps.setString(1,artist_name);  
-                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                            artist.setArtist_id(rs.getInt(1));               
-                                                                            artist.setArtist_name(rs.getString(2));  
-
-                                                                        } catch (SQLException ex) {
-
-                                                                        }
-                                                                        return artist;       
-                                                                    }
-    
-                                                                    public static Artist retriveArtist(int artist_id,Connection con) { //Overfloat Method
-
-                                                                        Artist artist = new Artist();
-                                                                        try {
-                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM Artist WHERE artist_id=?");
-                                                                            ps.setInt(1,artist_id);  
-                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                            artist.setArtist_id(rs.getInt(1));               
-                                                                            artist.setArtist_name(rs.getString(2));  
-
-                                                                        } catch (SQLException ex) {
-
-                                                                        }
-                                                                        return artist;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                    }
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static int createInstrument(String instrument_name,Connection con) {  
+public static int createVideo(String video_name,String video_duration,int duration_id,String video_path,int type_id,String location_id,String video_availability,Connection con) { 
         
         int status = 0;
         try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO instrument (instrument_name) VALUES (?);");
-            ps.setString(1,instrument_name); 
-            
-            status=ps.executeUpdate();                
-        } catch (SQLException ex) {            
-        }
-        return status;
-    }
-    
-    
-    public static List<Instrument> retriveAllInstrument(Connection con) {                 //!!!!!!!!!!!!!!!!
+            PreparedStatement ps = con.prepareStatement("INSERT INTO video (video_name,video_duration,duration_id,video_path,type_id,location_id,video_availability) VALUES (?,?,?,?,?,?,?);");
+            ps.setString(1,video_name); 
+            ps.setString(2,video_duration); 
+            ps.setInt(3,duration_id); 
+            ps.setString(4,video_path); 
+            ps.setInt(5,type_id); 
+            ps.setString(6,location_id); 
+            ps.setString(7,video_availability); 
 
-            List<Instrument> list = new ArrayList<>();
-            try {
-                PreparedStatement ps = con.prepareStatement("SELECT * FROM Instrument");
-                ResultSet rs=ps.executeQuery();  
-                while(rs.next()){                       
-                    Instrument instrument = new Instrument();         
-                    instrument.setInstrument_id(rs.getInt(1));               
-                    instrument.setInstrument_name(rs.getString(2));  
-                    list.add(instrument);               
-                }  
-            } catch (SQLException ex) {
-
-            }
-            return list;            
-        }
-    
-    
-                                                                        public static Instrument retriveInstrument(String instrument_name,Connection con) { 
-
-                                                                            Instrument instument = new Instrument();
-                                                                            try {
-                                                                                PreparedStatement ps = con.prepareStatement("SELECT * FROM instrument WHERE instrument_name=?");
-                                                                                ps.setString(1,instrument_name);  
-                                                                                ResultSet rs=ps.executeQuery();  
-
-                                                                                instument.setInstrument_id(rs.getInt(1));               
-                                                                                instument.setInstrument_name(rs.getString(2));  
-
-                                                                            } catch (SQLException ex) {
-
-                                                                            }
-                                                                            return instument;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                        }
-    
-                                                                        public static Instrument retriveInstrument(int instrument_id,Connection con) { 
-
-                                                                            Instrument instument = new Instrument();
-                                                                            try {
-                                                                                PreparedStatement ps = con.prepareStatement("SELECT * FROM instrument WHERE instrument_id=?");
-                                                                                ps.setInt(1,instrument_id);  
-                                                                                ResultSet rs=ps.executeQuery();  
-
-                                                                                instument.setInstrument_id(rs.getInt(1));               
-                                                                                instument.setInstrument_name(rs.getString(2));  
-
-                                                                            } catch (SQLException ex) {
-
-                                                                            }
-                                                                            return instument;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                        }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static int createArtistPlaysInstrument(int artist_id,int instrument_id,Connection con) {  
-        
-        int status = 0;
-        try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO artistplaysinstrument (artist_id,instrument_id) VALUES (?,?);");
-            ps.setInt(1,artist_id); 
-            ps.setInt(2,instrument_id); 
             
             status=ps.executeUpdate();                
         } catch (SQLException ex) {            
@@ -383,10 +271,7 @@ public class JazzLibraryDAO {
     
     
     
-    
-    
-    
-    public static int createVideoContainsArtist(int video_id,int artist_id,Connection con) {  
+    public static int createVideoContainsArtist(int video_id,int artist_id,Connection con) {
         
         int status = 0;
         try {
@@ -402,7 +287,7 @@ public class JazzLibraryDAO {
     
     
     
-    public static List<VideoContainsArtist> retriveAllVideoContainsArtist(Connection con) {                 //!!!!!!!!!!!!!!!!
+    public static List<VideoContainsArtist> retriveAllVideoContainsArtist(Connection con) {  
 
             List<VideoContainsArtist> list = new ArrayList<>();
             try {
@@ -422,75 +307,7 @@ public class JazzLibraryDAO {
     
     
     
-    
-                                                                                    public static VideoContainsArtist retriveVideoContainsArtist_byArtistId(int artist_id,Connection con) { 
-
-                                                                                        VideoContainsArtist videocontainsartist = new VideoContainsArtist();
-                                                                                        try {
-                                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM videocontainsartist WHERE artist_id=?");
-                                                                                            ps.setInt(1,artist_id);  
-                                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                                            videocontainsartist.setVideo_id(rs.getInt(1));               
-                                                                                            videocontainsartist.setArtist_id(rs.getInt(2));  
-
-                                                                                        } catch (SQLException ex) {
-
-                                                                                        }
-                                                                                        return videocontainsartist;     
-                                                                                    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static int createVideoIsType(int video_id,int type_id,Connection con) {  
-        
-        int status = 0;
-        try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO videoistype (video_id,type_id) VALUES (?,?);");
-            ps.setInt(1,video_id); 
-            ps.setInt(2,type_id); 
-            
-            status=ps.executeUpdate();                
-        } catch (SQLException ex) {            
-        }
-        return status;
-    }
-    
-    
-    
-    
-    
-    public static int createType(int type_id,String type_name,Connection con) {  
-        
-        int status = 0;
-        try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO type (type_id,type_name) VALUES (?,?);");
-            ps.setInt(1,type_id); 
-            ps.setString(2,type_name); 
-            
-            status=ps.executeUpdate();                
-        } catch (SQLException ex) {            
-        }
-        return status;
-    }
-    
-    
-    
-    public static List<Type> retriveAllType(Connection con) {                 //!!!!!!!!!!!!!!!!
+    public static List<Type> retriveAllType(Connection con) {  
 
             List<Type> list = new ArrayList<>();
             try {
@@ -512,66 +329,7 @@ public class JazzLibraryDAO {
     
     
     
-    
-                                                                        public static Type retriveType(int type_id,Connection con) { 
-
-                                                                            Type type = new Type();
-                                                                            try {
-                                                                                PreparedStatement ps = con.prepareStatement("SELECT * FROM type WHERE type_id=?");
-                                                                                ps.setInt(1,type_id);  
-                                                                                ResultSet rs=ps.executeQuery();  
-
-                                                                                type.setType_id(rs.getInt(1));               
-                                                                                type.setType_name(rs.getString(2));  
-
-                                                                            } catch (SQLException ex) {
-
-                                                                            }
-                                                                            return type;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                        }
-    
-                                                                                    //edo h overload method den pianei ;p !! epidh exoun int inputkai ta 2
-                                                                                    public static Type retriveType(String type_name,Connection con) { 
-
-                                                                                        Type type = new Type();
-                                                                                        try {
-                                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM type WHERE type_name=?");
-                                                                                            ps.setString(1,type_name);  
-                                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                                            type.setType_id(rs.getInt(1));               
-                                                                                            type.setType_name(rs.getString(2));  
-
-                                                                                        } catch (SQLException ex) {
-
-                                                                                        }
-                                                                                        return type;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                                    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static int createDuration(int duration_id,String duration_name,Connection con) {  
-        
-        int status = 0;
-        try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO duration (duration_id,duration_name) VALUES (?,?);");
-            ps.setInt(1,duration_id); 
-            ps.setString(2,duration_name); 
-            
-            status=ps.executeUpdate();                
-        } catch (SQLException ex) {            
-        }
-        return status;
-    }
-    
-    public static List<Duration> retriveAllDuration(Connection con) {                 //!!!!!!!!!!!!!!!!
+    public static List<Duration> retriveAllDuration(Connection con) { 
 
             List<Duration> list = new ArrayList<>();
             try {
@@ -589,81 +347,9 @@ public class JazzLibraryDAO {
             return list;            
         }
     
-    
-    
-    
-    
-                                                                    public static Duration retriveDuration(int duration_id,Connection con) { 
 
-                                                                        Duration duration = new Duration();
-                                                                        try {
-                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM duration WHERE duration_id=?");
-                                                                            ps.setInt(1,duration_id);  
-                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                            duration.setDuration_id(rs.getInt(1));               
-                                                                            duration.setDuration_name(rs.getString(2));  
-
-                                                                        } catch (SQLException ex) {
-
-                                                                        }
-                                                                        return duration;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                    }
-
-                                                                    //edo h overload method den pianei ;p !! epidh exoun int inputkai ta 2
-                                                                    public static Duration retriveDuration(String duration_name,Connection con) { 
-
-                                                                        Duration duration = new Duration();
-                                                                        try {
-                                                                            PreparedStatement ps = con.prepareStatement("SELECT * FROM duration WHERE duration_name=?");
-                                                                            ps.setString(1,duration_name);  
-                                                                            ResultSet rs=ps.executeQuery();  
-
-                                                                            duration.setDuration_id(rs.getInt(1));               
-                                                                            duration.setDuration_name(rs.getString(2));  
-
-                                                                        } catch (SQLException ex) {
-
-                                                                        }
-                                                                        return duration;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public static int createVideo(String video_name,String video_duration,int duration_id,String video_path,int type_id,String location_id,String video_availability,Connection con) {  
-        
-        int status = 0;
-        try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO video (video_name,video_duration,duration_id,video_path,type_id,location_id,video_availability) VALUES (?,?,?,?,?,?,?);");
-            ps.setString(1,video_name); 
-            ps.setString(2,video_duration); 
-            ps.setInt(3,duration_id); 
-            ps.setString(4,video_path); 
-            ps.setInt(5,type_id); 
-            ps.setString(6,location_id); 
-            ps.setString(7,video_availability); 
-
-            
-            status=ps.executeUpdate();                
-        } catch (SQLException ex) {            
-        }
-        return status;
-    }
-    
-    public static List<Video> retriveAllVideo(Connection con) {                 //!!!!!!!!!!!!!!!!
+    public static List<Video> retriveAllVideo(Connection con) { 
 
             List<Video> list = new ArrayList<>();
             try {
@@ -684,40 +370,6 @@ public class JazzLibraryDAO {
             return list;            
         }
     
-    
-                                                                            public static Video retriveVideo(String video_name,Connection con) { 
-
-                                                                                Video video = new Video();
-                                                                                try {
-                                                                                    PreparedStatement ps = con.prepareStatement("SELECT * FROM video WHERE video_name=?");
-                                                                                    ps.setString(1,video_name);  
-                                                                                    ResultSet rs=ps.executeQuery();  
-
-                                                                                    video.setVideo_id(rs.getInt(1));               
-                                                                                    video.setVideo_name(rs.getString(2));  
-
-                                                                                } catch (SQLException ex) {
-
-                                                                                }
-                                                                                return video;       
-                                                                            }
-
-                                                                            public static Video retriveVideo(int duration_id,Connection con) { //Overfloat Method
-
-                                                                                Video video = new Video();
-                                                                                try {
-                                                                                    PreparedStatement ps = con.prepareStatement("SELECT * FROM video WHERE duration_id=?");
-                                                                                    ps.setInt(1,duration_id);  
-                                                                                    ResultSet rs=ps.executeQuery();  
-
-                                                                                    video.setVideo_id(rs.getInt(1));               
-                                                                                    video.setVideo_name(rs.getString(2));  
-
-                                                                                } catch (SQLException ex) {
-
-                                                                                }
-                                                                                return video;            //... tin opoia tha e3ageis sto telos gia ton     Servlet to use
-                                                                            }
 
 
 																			
@@ -738,11 +390,7 @@ public class JazzLibraryDAO {
     	
 		}
   
-                                                                            
-
-
-
-    
+                         
     
     
 }

@@ -1,5 +1,8 @@
 package JazzLibraryClassies;
-
+/**
+*
+* @author nick
+*/
 public class Type {
 
     private int type_id;

@@ -8,11 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.Icon;
@@ -25,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+//my package
 import DAO.JazzLibraryDAO;
 
 /**
@@ -261,12 +258,14 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
             }
         });
        
+        
+        
+        //perno kathe kataxorish apo kathe txtField , kai ta bazo sthn replaceOldResourceAtributesFromFile();
+        //na grapsei to arxeio me nees engrafes  ,  allazei kai tis resource global metaulittes kalou kakou 
         resourcesLink_Btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	
 
-            	
             	String[] resourcesAtributes = new String[5];
             	
             	resourcesAtributes[0]=artistNamesFilePath_Tf.getText().trim();
@@ -275,19 +274,10 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 				resourcesAtributes[3]=searchTagsPath_Tf.getText().trim();
 				resourcesAtributes[4]=databaseStructureFilePath_Tf.getText().trim();
 
-
-            	 
-            	
-                if (isResourcesTFieldAtributesInputCorrect()==true) {
+				
+                if (isResourcesTFieldAtributesInputCorrect()==true) 
                 	VideoManagerAppMain.replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerAppMain.resourcesConnections);
                 	
-                	VideoManagerAppMain.artistNamesFilePath = artistNamesFilePath_Tf.getText().trim();
-                	VideoManagerAppMain.databaseFeederFilePath = databaseFeederFilePath_Tf.getText().trim();
-                	VideoManagerAppMain.videoReceiverFolderPath = videoReceivingFolderPath_Tf.getText().trim();
-                	VideoManagerAppMain.searchTagsFilePath = searchTagsPath_Tf.getText().trim();
-                	VideoManagerAppMain.databaseStructureFilePath = databaseStructureFilePath_Tf.getText().trim();
-                }
-
             }
         });
 
@@ -305,17 +295,9 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
             	
 				try {
 					
-					if (isDatabaseTFieldAtributesInputCorrect()==true){
-						replaceOldDatabaseAtributesFromFile(databaseAtributes,VideoManagerAppMain.resourcesConnections);
+					if (isDatabaseTFieldAtributesInputCorrect()==true)
+						VideoManagerAppMain.replaceOldDatabaseAtributesFromFile(databaseAtributes,VideoManagerAppMain.resourcesConnections);
 
-						
-						VideoManagerAppMain.serverName = serverName_Tf.getText().trim();
-						VideoManagerAppMain.databaseName = databaseName_Tf.getText().trim();
-						VideoManagerAppMain.databaseUsername = databaseUsername_Tf.getText().trim();
-						VideoManagerAppMain.databasePassword = databasePassword_Tf.getText().trim();
-						
-					}
-					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -324,21 +306,23 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
             }
         });
         
+        
+        
         this.addWindowListener(new WindowAdapter() {
             @Override                               
             public void windowClosing(WindowEvent e) {
             	setInvisible();
             }
         });
-
-   
+        
+        
     }
     
     
 
     
     private boolean isResourcesTFieldAtributesInputCorrect() {
-    	
+    	//elenxos egirotitas , oste nono an einai sosta ta txtfield paths na pernane ,alios minima
         
 		String artistNamesFilePath=artistNamesFilePath_Tf.getText().trim();
 	    String databaseFeederFilePath=databaseFeederFilePath_Tf.getText().trim();
@@ -489,7 +473,7 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 	
 	
 	private boolean isDatabaseTFieldAtributesInputCorrect() throws SQLException {
-		
+		//pali elenxos eggirotitas gia database credentials
 		String serverName=serverName_Tf.getText().trim();
 		String databaseName=databaseName_Tf.getText().trim();
 	    String databaseUsername=databaseUsername_Tf.getText().trim();
@@ -520,7 +504,6 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 		    	}
 		    	return false;
 	    }    
-	    
 	    else if(connectionContition==false){
 	    	databaseWarning_Lb.setText("Connection failed.. check your input");
 	    	databaseWarning_Lb.setForeground(Color.red);
@@ -532,111 +515,13 @@ public class ConfigureResourcesConnectionsFrame extends JFrame {
 	    	return true;
 	    }    	
 	    
-	    
-
 	}
 	
 	
-	
-	
-	
-	
-	
-	public int findLineIndexContains(String string, String filePath) throws IOException{
-		    
-		FileReader flConnectionsLine=new FileReader(filePath);
-		BufferedReader brConnectionsLine = new BufferedReader(flConnectionsLine);
-		 
-		int lineIndex = 0;
-		String fileLine=brConnectionsLine.readLine();
-	    while(fileLine != null){
-	    	
-	    	if(fileLine.contains(string)) {
-	    		
-	    		
-	            brConnectionsLine.close();
-	    		return lineIndex;
-	    	}
-	    	
-	    	lineIndex++;
-	        fileLine=brConnectionsLine.readLine();
-	    }
-	    
-        brConnectionsLine.close();
-	    return -1;
-	
-	}
-	
-	
-	
-	
 
-	    
-    
-	public static void replaceOldDatabaseAtributesFromFile(String[] databaseAtributes, String resourcesConnectionPath) {
-	    
-		try {
-	        // input the (modified) file content to the StringBuffer "input"
-	        BufferedReader resourcesConnectionFile = new BufferedReader(new FileReader(resourcesConnectionPath));
-	        StringBuffer inputBuffer = new StringBuffer();
-	        String resourcesConnectionLine;
-
-	        while ((resourcesConnectionLine = resourcesConnectionFile.readLine()) != null) {
-	            
-	        	String[] splitedResourcesConnectionLine = resourcesConnectionLine.split("#");
-	        	
-	        	if(splitedResourcesConnectionLine[0].equals("serverName")) 
-	        		inputBuffer.append("serverName#"+databaseAtributes[0]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("databaseName")) 
-	        		inputBuffer.append("databaseName#"+databaseAtributes[1]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("databaseUsername")) 
-	        		inputBuffer.append("databaseUsername#"+databaseAtributes[2]);
-	        	
-	        	else if(splitedResourcesConnectionLine[0].equals("databasePassword")) 
-	        		inputBuffer.append("databasePassword#"+databaseAtributes[3]);
-	        	
-	        	else 
-	        		inputBuffer.append(resourcesConnectionLine); //to afineis opos einai
-
-	        	
-	            
-	        	inputBuffer.append('\n');
-
-	        }
-	        resourcesConnectionFile.close();
-
-	        // write the new string with the replaced line OVER the same file
-	        FileOutputStream fileOut = new FileOutputStream(resourcesConnectionPath);
-	        fileOut.write(inputBuffer.toString().getBytes());
-	        fileOut.close();
-	        
-	        
-	        
-	        
-	      
-
-	    } catch (Exception e) {
-	        System.out.println("[databaseAtributes]Problem replacing resourcesConnectionfile line.");
-	    }
-	    
-	}
-    
-
-    
-
-    
-    
     private void setInvisible() {
             this.setVisible(false);
     }
     
-    
-    
-    
-    
-    
-    
-    
+
 }

@@ -19,9 +19,16 @@ import javax.swing.table.*;
  *  the model row number of the button that was clicked.
  *
  */
-public class ButtonColumn extends AbstractCellEditor
-	implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener
-{
+
+
+/**
+*
+* @author nick
+*/
+public class ButtonColumn extends AbstractCellEditor implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener{
+	//Class parmeno etoimo apo StackOverFlow , to opoio mou dinei thn dinatotita na balo koumpia me Listeners
+	//mesa se ena jTable (etsi to xrisimopoio ) , 
+	
 	private JTable table;
 	private Action action;
 	private int mnemonic;

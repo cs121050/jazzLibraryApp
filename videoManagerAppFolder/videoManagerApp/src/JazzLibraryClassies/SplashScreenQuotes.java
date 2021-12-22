@@ -1,4 +1,8 @@
 package JazzLibraryClassies;
+/**
+*
+* @author nick
+*/
 public class SplashScreenQuotes {
 	private int quote_id;
     private String quote_text;

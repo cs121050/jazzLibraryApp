@@ -23,11 +23,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import JazzLibraryClassies.VideoDatabaseFeeder;
-
+//from jar
 import java.util.ArrayList;
+import java.util.List;
 
-
+//my package
+import JazzLibraryClassies.VideoDatabaseFeeder;
+import MyHelpfulMethods.WriteFromToFile;
 
 /**
 *
@@ -136,6 +138,16 @@ public class ResourceFileCorrectionFrame extends JFrame {
 
     
     
+
+    
+    
+    
+    
+    
+	
+    
+    
+    
     
     
     
@@ -176,6 +188,8 @@ public class ResourceFileCorrectionFrame extends JFrame {
     		File videoInfoFile = new File(VideoManagerAppMain.videoReceiverFolderPath+"\\"+MainFrame.videoDataGlobalList.get(i).getVideo_id()+".info.jason");
     		if(videoInfoFile.exists())
     			MainFrame.videoDataGlobalList.get(i).setVideo_availability("1");
+    		else
+    			MainFrame.videoDataGlobalList.remove(i); i--;
 		}
     	
     }
@@ -214,7 +228,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
         
         artistNames = RemoveArtistNameDuplication(artistNames);
 
-        writeStringArrayListToFile(artistNames,VideoManagerAppMain.artistNamesFilePath);
+        WriteFromToFile.writeStringArrayListToFile(artistNames,VideoManagerAppMain.artistNamesFilePath);
 
 	}
     
@@ -226,12 +240,11 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	    	FileReader videoFR=new FileReader(VideoManagerAppMain.databaseFeederFilePath);
 	    	BufferedReader videoBR = new BufferedReader(videoFR);
 	    	
-	    	ArrayList<VideoDatabaseFeeder> videoDatabaseFeederList = new ArrayList<VideoDatabaseFeeder>();
+	    	List<VideoDatabaseFeeder> videoDatabaseFeederList = new ArrayList<VideoDatabaseFeeder>();
 	    	
+	    	int count=0;
 	        String videoLine=videoBR.readLine();
 	        while(videoLine != null){
-				System.out.println(videoLine);
-
 
 	        	String[] splitedVideoLine=videoLine.split("#");
 	        	
@@ -263,26 +276,16 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	        
 	        videoDatabaseFeederList = RemoveVideoDuplication(videoDatabaseFeederList);
 	
-	        writeVideoArrayListToFile(videoDatabaseFeederList,VideoManagerAppMain.databaseFeederFilePath);
+	        WriteFromToFile.writeVideoListToFile(videoDatabaseFeederList,VideoManagerAppMain.databaseFeederFilePath);
 
 	}
 
 	    
-	private void writeVideoArrayListToFile(ArrayList<VideoDatabaseFeeder> videos, String databaseFeederFilePath) throws IOException {
+	
 
-		FileWriter fw = new FileWriter(databaseFeederFilePath);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
-        
-        for(int i=0;i<videos.size();i++)
-        	pw.println(videos.get(i).toString());
-        
-        pw.close();
-	}
-
-	private ArrayList<VideoDatabaseFeeder> RemoveVideoDuplication(ArrayList<VideoDatabaseFeeder> videoList) {
+	private List<VideoDatabaseFeeder> RemoveVideoDuplication(List<VideoDatabaseFeeder> videoList) {
 			
-			ArrayList<VideoDatabaseFeeder> newVideoList = new ArrayList<VideoDatabaseFeeder>();
+			List<VideoDatabaseFeeder> newVideoList = new ArrayList<VideoDatabaseFeeder>();
 			boolean artistNameDublicationFound = false;
 			
 			for(int i=0;i<videoList.size();i++) {
@@ -314,20 +317,6 @@ public class ResourceFileCorrectionFrame extends JFrame {
 	
 
 	
-	
-	private void writeStringArrayListToFile(ArrayList<String> list, String databaseFeederFilePath) throws IOException {
-    	
-    	FileWriter fw = new FileWriter(databaseFeederFilePath);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
-        
-        for(int i=0;i<list.size();i++)
-        	pw.println(list.get(i).toString());
-        
-        
-        pw.close();
-  
-    }
 	
 	
 	

@@ -20,14 +20,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import JazzLibraryClassies.VideoDatabaseFeeder;
-
+//from jar
 import java.util.ArrayList;
 
+//my package
 import youtubeDownloaderSyncPipe.*;
- 
+import JazzLibraryClassies.VideoDatabaseFeeder;
 
 
+/**
+*
+* @author nick
+*/
 public class VideoDownloaderFrame extends JFrame {
 
         
@@ -131,14 +135,14 @@ public class VideoDownloaderFrame extends JFrame {
 
 
 
-    private void writeVideoArrayListToFile(ArrayList<VideoDatabaseFeeder> videos, String databaseFeederFilePath) throws IOException {
+    private void writeVideoArrayListToFile(ArrayList<VideoDatabaseFeeder> updatedVideoDatabaseFeeder, String databaseFeederFilePath) throws IOException {
 
 		FileWriter fw = new FileWriter(databaseFeederFilePath);
         BufferedWriter bw = new BufferedWriter(fw);
         PrintWriter pw = new PrintWriter(bw);
         
-        for(int i=0;i<videos.size();i++)
-        	pw.println(videos.get(i).toString());
+        for(int i=0;i<updatedVideoDatabaseFeeder.size();i++)
+        	pw.println(updatedVideoDatabaseFeeder.get(i).toString());
         
         pw.close();
 	}
@@ -196,10 +200,7 @@ public class VideoDownloaderFrame extends JFrame {
                 videoDatabaseFeederList.get(i).setVideo_name(videoTitleValue.replace("#","n."));
                 videoDatabaseFeederList.get(i).setVideo_duration(String.valueOf(durationNumericForm));
             }
-            else {
-            	
-            	videoDatabaseFeederList.remove(i); //an to video den einai avalable delete it
-            }
+
            
 
         }
@@ -344,6 +345,8 @@ public class VideoDownloaderFrame extends JFrame {
         	videoDatabaseFeeder.setVideo_duration(splitedVideoLine[4]);
         	videoDatabaseFeeder.setVideo_type(splitedVideoLine[5]);
         	videoDatabaseFeeder.setVideo_id(splitedVideoLine[6]);
+        	videoDatabaseFeeder.setVideo_availability(splitedVideoLine[7]);
+
 	        	
 
         	videoDatabaseFeederList.add(videoDatabaseFeeder);

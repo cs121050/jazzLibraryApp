@@ -1,5 +1,8 @@
 package JazzLibraryClassies;
-
+/**
+*
+* @author nick
+*/
 public class Duration {
 
     private int duration_id;

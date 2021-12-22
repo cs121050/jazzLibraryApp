@@ -16,7 +16,6 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,9 +25,6 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;    
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -48,40 +44,49 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 //my pakages
 import ButtomColumnTableModel.*;
 import JazzLibraryClassies.VideoDatabaseFeeder;
-import youtubeDownloaderSyncPipe.SyncPipe;
 import AutoCompleteJTextField.*;
-
-
+import MyHelpfulMethods.*;
 
 
 /**
 *
 * @author nick
 */
-
 public class MainFrame extends JFrame {
-        
-	//anoigo to file kai to kratao anoixto kathos trexei to programa
+    //videoDataGlobalList : otan h efarmogh diavazei ena file pou mesa exei video engrafes (feedingFile) 
+    //                      pernaei kathe gramh san videoDatabaseFeeder object mesa se Global List , opoios
+	//                      thelei loipon thn pliroforia thn pernei apo do
+	//artistNameList : fortono ola ta onomata ton artist apo to antistixo resource file ,, meskopo na
+	//                 emfanizonte ta onomata sto extraArtistAutoCopleteTextField
+	//remainingArtistNames : lista mono me ta artistNames apo ekei pou eixa stamatisei thn proigoumenh fora kai meta
+	//remainingArtistNamesCounter : counter pou au3anete se kathe patima tou register_btn ,, oste na di3ei sthn epomenh
+	//                              thesh tou remainingArtistNames 
+	//searchTags : diavazei ta tags apo to file ,, otan patithe to loadartist_btn , tha anixthoun ston browser
+	//             tosa tabs  osa tags ,, (ena search ana artist gia kathe tag!)
+	//initialiseResourcesVariables() : dino times staparapano mia kai kalh me mia Function 
+
+	
+	//importedFileName : to onoma tou plesiu pano apo to table
+	//initialiseResourcesVariables() : dino times 
+
 	
 	public static List<VideoDatabaseFeeder> videoDataGlobalList = new ArrayList<VideoDatabaseFeeder>();
 	public static ArrayList<String> artistNameList;   
-	public static ArrayList<String> remainingArtistNames;   
-	public int remainingArtistNamesCounter = 0;
-	
 	public static ArrayList<String> searchTags ;
+	public static ArrayList<String> remainingArtistNames;   
+	public static int remainingArtistNamesCounter = 0;
 
-	
-	static MyDefaultTableModel tableModel;
-	
-	
     private static String importedFileName="not set";
-	
+	static MyDefaultTableModel tableModel;	
     private static JTable databaseFeedingFile_jT;
 	
+    
     
 	private JLabel artistName_Jl;
 	private JLabel instrumentName_Jl;
@@ -93,8 +98,7 @@ public class MainFrame extends JFrame {
 	static JLabel artistNameValue_Jl;
     private JTextField videoLink_Tf;
     private JTextField extraArtist_Tf;
-	
-    
+
     
     private JComboBox instrument_Cb;
     private JComboBox type_Cb;
@@ -193,8 +197,7 @@ public class MainFrame extends JFrame {
 		
         artistAutoCompleteJTextFieldExtra();
 
-        
-        
+
     	JScrollPane tableScrollPane = new JScrollPane();
     	// Force the scrollbars to always be displayed
     	tableScrollPane.setVerticalScrollBarPolicy(
@@ -206,9 +209,6 @@ public class MainFrame extends JFrame {
     	tableScrollPane.getViewport ().add (databaseFeedingFile_jT);
 
     	
-    	
-    
-
         JPanel videoRegistrationPanel = new JPanel();
         videoRegistrationPanel.setLayout(new GridLayout(2,6,10,10));
         videoRegistrationPanel.setBorder(BorderFactory.createTitledBorder("Video Registration"));
@@ -228,8 +228,6 @@ public class MainFrame extends JFrame {
         videoRegistrationPanel.add(register_Btn);
 
 
-        
-        
     	JPanel buttonPanel = new JPanel();
     	buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     	buttonPanel.add(loadNextArtist_Btn);
@@ -290,7 +288,7 @@ public class MainFrame extends JFrame {
                 
             	
             	
-            	String artistName=mainAndExtraArtistMerger();
+            	String artistNames=mainAndExtraArtistMerger();
 
             	String videoLink=secontIndicatorTrimmer();
             	
@@ -300,7 +298,7 @@ public class MainFrame extends JFrame {
             	
             	
             	VideoDatabaseFeeder video = new VideoDatabaseFeeder();
-            	video.setArtist_name(artistName);
+            	video.setArtist_name(artistNames);
         		video.setArtist_instrument(String.valueOf(instrument_Cb.getSelectedItem()));
         		video.setVideo_link(videoLink);
         		video.setVideo_type(String.valueOf(type_Cb.getSelectedItem()));
@@ -316,7 +314,7 @@ public class MainFrame extends JFrame {
         		
 				try {
 					
-					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
+					WriteFromToFile.writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 					
 					tableModel.insertRow(0, video.toObject());
 					
@@ -327,6 +325,8 @@ public class MainFrame extends JFrame {
         		
             }
 
+            
+            
 			private String mainAndExtraArtistMerger() {
 
 				String artistName;
@@ -343,19 +343,15 @@ public class MainFrame extends JFrame {
             	String videoId=splitedVideoLink[1];
             
             	String[] splitLink=videoId.split("&t=");
-	    		String videoIdWithoutSeconds=splitedVideoLink[0];
+	    		String videoIdWithoutSeconds=splitLink[0];
 	    		
-	    		
-	    		
-				return videoIdWithoutSeconds;
+	    		return videoIdWithoutSeconds;
 			}
 
 			private String secontIndicatorTrimmer() {
-				//an exei 2 fores = , paei na pei oti to video den 3ekina apo thn arxh
 
             	String[] splitLink=videoLink_Tf.getText().split("&t=");
 	    		String videoLinkWithoutSeconds=splitLink[0];
-            	
             	
 				return videoLinkWithoutSeconds;
 			}
@@ -369,9 +365,31 @@ public class MainFrame extends JFrame {
 
                 artistNameValue_Jl.setText(remainingArtistNames.get(remainingArtistNamesCounter));
             	
-                artistBrowserSearchResults();
+                try {
+					artistBrowserSearchResults();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
    
             }
+            
+            
+            private void artistBrowserSearchResults() throws IOException {
+            	//sinthetei ena Youtube quary pano sto URL , ena gia kathe tag , kai anigei ena browser tab gia to kathena
+        		String url = "https://www.youtube.com/results?search_query=";
+        		String[] splitedArtistName=remainingArtistNames.get(remainingArtistNamesCounter).split(" ");
+
+        		
+        		for(int i=0 ;i<splitedArtistName.length;i++)
+                    url = url +"+"+ splitedArtistName[i];
+
+        		for(int i=0 ;i<searchTags.size();i++)     
+        			browserURL(url+"+"+ searchTags.get(i));
+
+        		
+        		remainingArtistNamesCounter++;
+        	}
         });
 
         
@@ -379,13 +397,7 @@ public class MainFrame extends JFrame {
         
         
         
-        
-        
-        
-        
-        
-        
-        
+   
         
         
         
@@ -396,8 +408,6 @@ public class MainFrame extends JFrame {
             	
             	try {
 					newFeedingFileCreation();
-					JOptionPane.showMessageDialog(MainFrame.this, "feeding file has sincronized");
-					
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -406,6 +416,35 @@ public class MainFrame extends JFrame {
  
             	
             }
+            
+            private void newFeedingFileCreation() throws IOException {
+    			
+    			File newDatabaseFeedingFile = new File(VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt" );
+    			if(!newDatabaseFeedingFile.exists()) {
+    				newDatabaseFeedingFile.getParentFile().mkdirs(); 
+    				newDatabaseFeedingFile.createNewFile();
+					JOptionPane.showMessageDialog(MainFrame.this, "onGoingDatabaseFeederFile.txt file has created");
+    			}
+    			else {
+					JOptionPane.showMessageDialog(MainFrame.this, "onGoingDatabaseFeederFile.txt already exists");
+    			}
+    			
+    			
+    			//auto einai mia sintomeush ,, gia na min xriastei na pas na ala3eis to focused feeding file apo to master sto onGoing !! ,, 
+    			//einai gia na alazeis ligo poio grigora !!!
+    			VideoManagerAppMain.databaseFeederFilePath = VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
+    			
+    			String[] resourcesAtributes = new String[5];
+            	
+            	resourcesAtributes[0]=VideoManagerAppMain.artistNamesFilePath;
+            	resourcesAtributes[1]=VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
+    			resourcesAtributes[2]=VideoManagerAppMain.videoReceiverFolderPath;
+    			resourcesAtributes[3]=VideoManagerAppMain.searchTagsFilePath;
+    			resourcesAtributes[4]=VideoManagerAppMain.databaseStructureFilePath;
+    			
+            	VideoManagerAppMain.replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerAppMain.resourcesConnections);
+            
+    	  }
         });
         
         
@@ -415,7 +454,7 @@ public class MainFrame extends JFrame {
 
             	try {
 					mergeFeedingFilesToMaster();
-					JOptionPane.showMessageDialog(MainFrame.this, "new feeding file has merged to the Master ");
+					JOptionPane.showMessageDialog(MainFrame.this, "onGoingDatabaseFeederFile.txt has merged to the Master ");
 					
 					
 				} catch (IOException e1) {
@@ -428,8 +467,6 @@ public class MainFrame extends JFrame {
 			private void mergeFeedingFilesToMaster() throws IOException {
 				
 				//blepei an iparxei to MASTER , an den iparxei to dimiourgei ,, an iparxei prosthetei se auto kathe gramh tou onGoingFeedingFile xoris na elenxei tipota
-				
-				//writeVideoListToFile(videoList,VideoManagerAppMain.databaseFeederFileMASTERPath);
 				
 				File databaseFeederFileMASTER = new File(VideoManagerAppMain.databaseFeederFileMASTERPath);
 				if(!databaseFeederFileMASTER.exists()) { 
@@ -451,11 +488,7 @@ public class MainFrame extends JFrame {
 
         });
         
-      
-        
-       
-        
-        
+
         
         addArtist_Item.addActionListener(new ActionListener() {
             @Override
@@ -468,7 +501,6 @@ public class MainFrame extends JFrame {
         });
         
         
-        
         resorceFileCorrection_Item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -479,12 +511,7 @@ public class MainFrame extends JFrame {
             	
             }
         });
-        
-        
-        
-        
-        
-        
+
         
     	videoDownloader_Item.addActionListener(new ActionListener() {
             @Override
@@ -526,10 +553,14 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
             	
+            	//xoris pola logia , to Refresh , , prota fortonei ek neou ta resources ,
+            	//epita kanei ola ta initialisations pou eginan sto pepairUI
             	try {
             		
-					VideoManagerAppMain.connectionsInitialisation();
+            		VideoManagerAppMain.connectionsInitialisation();
 					initialiseResourcesVariables();
+            		artistAutoCompleteJTextFieldExtra();
+            		
 			    	
 					tableScrollPane.getViewport().add(databaseFeedingFile_jT);
 
@@ -566,6 +597,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	
             	ConfigureResourcesConnectionsFrame configureResourcesConnectionsFrame = new ConfigureResourcesConnectionsFrame();
+            	
             	try {
 					configureResourcesConnectionsFrame.prepareUI();
 				} catch (SQLException e1) {
@@ -579,8 +611,8 @@ public class MainFrame extends JFrame {
         	@Override
             public void actionPerformed(ActionEvent e) {
         		
-//        		AboutFrame aboutFrame = new AboutFrame();
-//        		aboutFrame.prepareUI();
+        		AboutFrame aboutFrame = new AboutFrame();
+        		aboutFrame.prepareUI();
         		 
         	}   
         });
@@ -591,66 +623,17 @@ public class MainFrame extends JFrame {
         
     }
     
-    
-	  private void newFeedingFileCreation() throws IOException {
-			
-			File newDatabaseFeedingFile = new File(VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt" );
-			if(!newDatabaseFeedingFile.exists()) {
-				newDatabaseFeedingFile.getParentFile().mkdirs(); 
-				newDatabaseFeedingFile.createNewFile();
-			}
-			VideoManagerAppMain.databaseFeederFilePath = VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
-			
-			String[] resourcesAtributes = new String[5];
-        	
-			//na ftiaxtei global pinakas sto MAIN .. pou na min xriazete na diloneis kathe glamh ,, allla mono mia kathe fora
-        	resourcesAtributes[0]=VideoManagerAppMain.artistNamesFilePath;
-        	resourcesAtributes[1]=VideoManagerAppMain.resourcesFolder + "\\onGoingDatabaseFeederFile.txt";
-			resourcesAtributes[2]=VideoManagerAppMain.videoReceiverFolderPath;
-			resourcesAtributes[3]=VideoManagerAppMain.searchTagsFilePath;
-			resourcesAtributes[4]=VideoManagerAppMain.databaseStructureFilePath;
-			
-        	VideoManagerAppMain.replaceOldResourceAtributesFromFile(resourcesAtributes,VideoManagerAppMain.resourcesConnections);
-			
-	  }
 
-
-
-	private ArrayList<String> readSearchTags() throws IOException {
-
-		FileReader flSearchTagsFileLine=new FileReader(VideoManagerAppMain.searchTagsFilePath);
-    	BufferedReader brSearchTagsFileLine = new BufferedReader(flSearchTagsFileLine);
-    	
-    	//bale elenxo an iparxoun ta files pou dia vazeis apo mesa
-		
-		ArrayList<String> searchTagsList = new ArrayList<String>();
-		
-        String searchTagsLine=brSearchTagsFileLine.readLine();
-        while(searchTagsLine != null){
-        	        	
-        	searchTagsList.add(searchTagsLine);
-
-            searchTagsLine=brSearchTagsFileLine.readLine();
-        }
-        
-        brSearchTagsFileLine.close();
-				
-		return searchTagsList;
-	}
-
-
-
-
-
-
+	
+	
 
 
 
 	private void initialiseResourcesVariables() throws IOException {
 		if(VideoManagerAppMain.isResourcesAtributesInputCorrect()) {
 	        
-        	searchTags = readSearchTags();
-	        artistNameList =  readArtistNamesFileToList();
+        	searchTags = FromFileTo.fromFileToArrayList(VideoManagerAppMain.searchTagsFilePath);
+	        artistNameList =  FromFileTo.fromFileToArrayList(VideoManagerAppMain.artistNamesFilePath);
 	    	remainingArtistNames = continiueFromWhereYouStoped();
         
 	        fileNameInitialisation();
@@ -669,33 +652,7 @@ public class MainFrame extends JFrame {
 	}
 
 
-	
 
-	
-	
-	private void artistBrowserSearchResults() {
-
-		
-		
-		String url = "https://www.youtube.com/results?search_query=";
-
-		String[] splitedArtistName=remainingArtistNames.get(remainingArtistNamesCounter).split(" ");
-
-		
-		
-		for(int i=0 ;i<splitedArtistName.length;i++)
-            url = url +"+"+ splitedArtistName[i];
-
-        
-		for(int i=0 ;i<searchTags.size();i++)    
-			browserURL(url+"+"+ searchTags.get(i));
-
-		
-		
-		remainingArtistNamesCounter++;
-	}
-
-	
 	
 	private static void browserURL(String uriString) {
 		
@@ -728,27 +685,24 @@ public class MainFrame extends JFrame {
 	
     
     private void artistAutoCompleteJTextFieldExtra() {
-		
+		//autocomplete field ,, dose dimensions , xroma , kai xose mesa to pinaka me ta onomata
     	AutoSuggestor autoSuggestor = new AutoSuggestor(extraArtist_Tf, this, null, Color.BLACK.brighter(), Color.WHITE, Color.RED, 0.85f) {
             @Override
 			protected
             boolean wordTyped(String typedWord) {
-
             	
                 setDictionary(artistNameList);
-                //addToDictionary("bye");//adds a single word
 
                 return super.wordTyped(typedWord);//now call super to check for any matches against newest dictionary
             }
         }; 
-    	   	
 	}
     
 	
     
     
     static void fileNameInitialisation() throws IOException {
-    	
+    	//alazo ta "//" se # gia na mporo na splitaro poio kala , kai na paro to onoma tou file!
 		File tempFile = new File(VideoManagerAppMain.databaseFeederFilePath);
 		boolean exists = tempFile.exists();
 		
@@ -764,19 +718,7 @@ public class MainFrame extends JFrame {
     
     
     
-    private static void writeVideoListToFile(List<VideoDatabaseFeeder> videoList,String filePath) throws IOException {
-    	
-    	FileWriter fw = new FileWriter(filePath);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
-        
-        for(int i=0;i<videoList.size();i++)
-        	pw.println(videoList.get(i).toString());
-        
-        
-        pw.close();
-  
-    }
+   
 
     
     
@@ -794,7 +736,7 @@ public class MainFrame extends JFrame {
         databaseFeedingFile_jT=new JTable(tableModel);
 
         
-        
+        //orismos ton listener ton custom koumpion
         AbstractAction browse = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -824,7 +766,7 @@ public class MainFrame extends JFrame {
                 
                 try {
                 	
-					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
+                	WriteFromToFile.writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -848,7 +790,7 @@ public class MainFrame extends JFrame {
                 
                 try {
                 	
-					writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
+                	WriteFromToFile.writeVideoListToFile(videoDataGlobalList,VideoManagerAppMain.databaseFeederFilePath);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -857,8 +799,7 @@ public class MainFrame extends JFrame {
         };
 
       
-        
-        
+        //to koumpi na mpei sthn stilh 8
         ButtonColumn browseButtonColumn = new ButtonColumn(databaseFeedingFile_jT, browse, 8);
         browseButtonColumn.setMnemonic(KeyEvent.VK_D);
 
@@ -880,88 +821,62 @@ public class MainFrame extends JFrame {
 
 
 	static ArrayList<String> continiueFromWhereYouStoped() throws IOException {
+		//h kathe engrafh grafete anapoda mesa ston feeder.txt! 
+		//me apotelesma kathe fora ,, h teleutea engrafh pou egine , na einai sthn proth gramh tou arxeiou!
+		//opote gia na bro se poio onoma stamatisa , arkei na paro ton artist ths proths gramhs !
+		//  sthn sinexeia trexo gramh gramh  to artistnames.txt  otan bro to onoma auto  stamatao , kai ftiaxno
+		//mia listame ta onomata apo ekei kai kato ,,, auto einai to list  --> remainingArtistNames
+		//an ftaso sto telos ths listas xoris na bro to onoma , h auto den iparxei tote
+		//remainingArtistNames == sinoliko list   ,,, 3ekinaei dld apo thn arxh
 
-		
 		ArrayList<String> remainingArtistNames = new ArrayList<String>();
 
-		
 		FileReader flDatabaseFeederFileLine=new FileReader(VideoManagerAppMain.databaseFeederFilePath);
     	BufferedReader brDatabaseFeederFileLine = new BufferedReader(flDatabaseFeederFileLine);
     	
+    	
         String DatabaseFeederFileLine=brDatabaseFeederFileLine.readLine();
-        
-        
+		brDatabaseFeederFileLine.close();
+
         
         if(DatabaseFeederFileLine==null) {
+        	//paei na pei oti to feedingfile einai adio ,, den exei mesa kanena video
         	remainingArtistNames=artistNameList;
-
         }
         else {
         	String[] splitConnectionsLine=DatabaseFeederFileLine.trim().split("#");
     		String[] splitArtistNames=splitConnectionsLine[0].trim().split("@");
-    		
     		String lastArtistYouSearched=splitArtistNames[0];
 
-            
-    		brDatabaseFeederFileLine.close();
-
-    		
-    		
     		boolean artistNameFound=false;
     		
     		FileReader flArtistNamesFileLine=new FileReader(VideoManagerAppMain.artistNamesFilePath);
         	BufferedReader brArtistNamesFileLine = new BufferedReader(flArtistNamesFileLine);
-        	
-    		
-            String artistNamesLine=brArtistNamesFileLine.readLine();
 
+        	
+            String artistNamesLine=brArtistNamesFileLine.readLine();
+            
             while(artistNamesLine != null){
             	        	
-            	
         		if(lastArtistYouSearched.equals(artistNamesLine))
         			artistNameFound=true;
         		
-        		if(artistNameFound==true) {
-        			
+        		if(artistNameFound==true)
         			remainingArtistNames.add(artistNamesLine);
-        			
-        		}
 
                 artistNamesLine=brArtistNamesFileLine.readLine();
             }
-            
-            
             brArtistNamesFileLine.close();
 
-            
-            
-            if(artistNamesLine== null && artistNameFound==false ) {
-            	
-            	
+            if(artistNamesLine== null && artistNameFound==false )
             	remainingArtistNames=artistNameList;
-            	
-            	
-            }
-
         }
 				
-		
-		
-		
-        
-		
-		
 		return remainingArtistNames;
 	}
 
 
 
-    
-    
-    
-
-    
-    
     
     private static List<VideoDatabaseFeeder> readDatabaseFeederFileToVideoObjects() throws IOException {
     	
@@ -1000,43 +915,10 @@ public class MainFrame extends JFrame {
     }
     
     
-static ArrayList<String> readArtistNamesFileToList() throws IOException {
-    	
-    	FileReader flArtistNamesFileLine=new FileReader(VideoManagerAppMain.artistNamesFilePath);
-    	BufferedReader brArtistNamesFileLine = new BufferedReader(flArtistNamesFileLine);
-    	
-
-    	ArrayList<String> artistNameList = new ArrayList<>();
-
-		
-        String artistNamesLine=brArtistNamesFileLine.readLine();
-        while(artistNamesLine != null){
-        	
-    		
-        	artistNameList.add(artistNamesLine);
-    		
-            artistNamesLine=brArtistNamesFileLine.readLine();
-        }
-        
-		brArtistNamesFileLine.close();
-        
-        return artistNameList;
-    }
-    
-    
-
-    
-    
-
-
-    private void setInvisible() {
-
-    	this.setVisible(false);
-    }
-
     
     
     
+
     
     
     

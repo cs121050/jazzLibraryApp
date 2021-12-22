@@ -17,8 +17,13 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+/**
+*
+* @author nick
+*/
 public class AutoSuggestor {
-
+	//einai ena etoimo Class , pou pira apo StackOverFlow . einai ena tupou spinners objeckt pou to xrisimopio sto pedio ExtraArtistTF ths MainFrame
+	
     private final JTextField textField;
     private final Window container;
     private JPanel suggestionsPanel;

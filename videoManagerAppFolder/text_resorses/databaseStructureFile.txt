@@ -99,3 +99,4 @@ select * from instrument;
 select * from type;
 select * from videocontainsartist;
 select * from duration;
+select * from SplashScreenQuotes;

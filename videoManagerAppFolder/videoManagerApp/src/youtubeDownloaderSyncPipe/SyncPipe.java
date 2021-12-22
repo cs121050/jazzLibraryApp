@@ -3,7 +3,7 @@ package youtubeDownloaderSyncPipe;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
+//function pou xriazete to youtube-dl , gia na kanei download ta videos !!
 public class SyncPipe implements Runnable
 {
 public SyncPipe(InputStream istrm, OutputStream ostrm) {
