@@ -55,7 +55,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
 
        artistNameFileCorrection_Cb = new JCheckBox("Artist Name File Correction");
        videoDBFeederFileCorrection_Cb = new JCheckBox("Video DB Feeder File Correction");
-       refreshVideoAvailability_Cb = new JCheckBox("Refresh Video Availability Parameter");
+       refreshVideoAvailability_Cb = new JCheckBox("Refresh Video Availability");
 
 
        correction_Btn = new JButton("FileCorrection");
@@ -80,11 +80,11 @@ public class ResourceFileCorrectionFrame extends JFrame {
         chooseFileCorrectionPanel.add(resourceFileCorrectionWarning_Lb);
     	
     	
-    	this.add(chooseFileCorrectionPanel, BorderLayout.CENTER);
+    	this.add(chooseFileCorrectionPanel, BorderLayout.PAGE_START);
     	
         
         
-        this.setSize(380, 120);
+        this.setSize(430, 110);
         this.setLocationRelativeTo(null);
         this.setTitle("Resource File Correction");
         this.setVisible(true);
@@ -341,7 +341,7 @@ public class ResourceFileCorrectionFrame extends JFrame {
 				newArtistNames.add(artistNames.get(i));	
 		}	
 		
-		return artistNames;
+		return newArtistNames;
 	}
 
 	

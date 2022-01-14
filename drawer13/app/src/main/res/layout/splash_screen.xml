@@ -14,14 +14,14 @@
         android:id="@+id/splash_screen_quote_TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="392dp"
         android:fontFamily="@font/oldnewspapertypes"
         android:textColor="@color/white"
-        android:textSize="18dp"/>
-
-
+        android:textSize="18dp" />
 
 
 </RelativeLayout>

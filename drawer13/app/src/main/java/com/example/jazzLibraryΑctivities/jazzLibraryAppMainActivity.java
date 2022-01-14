@@ -352,7 +352,7 @@ public class jazzLibraryAppMainActivity<clickListener> extends AppCompatActivity
                         //simplifyFilterActivity("duration");
 
 
-                            filterHandler(con);
+                        filterHandler(con);
 
 
                     }
@@ -1446,8 +1446,9 @@ public class jazzLibraryAppMainActivity<clickListener> extends AppCompatActivity
 
         List<Video> videoList = null;
 
-        if(spinnerSelection.equals("Search Title")) {
-            videoList = JazzLibraryDAO.retriveVideo_By(editTextValue,con);
+        if(spinnerSelection.equals("Search Title") && editTextValue.length()>=3) {
+                editTextValue = "%"+" " + editTextValue +" "+ "%";
+                videoList = JazzLibraryDAO.retriveVideo_By(editTextValue, con);
         }
         else if(spinnerSelection.equals("Search Artist")) {
 
@@ -1457,6 +1458,9 @@ public class jazzLibraryAppMainActivity<clickListener> extends AppCompatActivity
         else if(spinnerSelection.equals("Contains")) {
             // videoList = JazzLibraryDAO.retriveVideo_By(0,0,editTxtSearchString);
             videoList = JazzLibraryDAO.retriveVideo_By(editTextValue,con);
+        }
+        else{
+            videoList = JazzLibraryDAO.retriveVideo_By("no video to show",con);
         }
 
         return videoList;
@@ -1552,13 +1556,6 @@ public class jazzLibraryAppMainActivity<clickListener> extends AppCompatActivity
         drawable_trumpet_icon = ResourcesCompat.getDrawable(res, R.drawable.instru_icon_trumpet, null);
         drawable_violin_icon = ResourcesCompat.getDrawable(res, R.drawable.instru_icon_violin, null);
         drawable_vibes_icon = ResourcesCompat.getDrawable(res, R.drawable.instru_icon_vibes, null);
-
-
-
-
-
-
-
 
     }
 
